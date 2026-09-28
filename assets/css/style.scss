@@ -1,0 +1,25 @@
+---
+---
+
+@import "{{ site.theme }}";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap");
+
+/* DBIS-11 palette: color-hex.com palette 1085113. Text uses darker shades of the same hues for contrast. */
+$dark: #262A20; $slate: #667C7E; $slate-text: #566A6C; $tan: #C7A887; $tan-text: #7D5F3F; $cream: #EDDDCD; $stone: #D9D5D2;
+
+body { font-family: "Open Sans", "Segoe UI", Roboto, Arial, sans-serif; color: $dark; background: #F4F2EF; }
+.markdown-body { font-family: inherit; color: $dark; background: #fff; padding: 28px; border-radius: 14px; border: 1px solid $stone; }
+.markdown-body h1, .markdown-body h2, .markdown-body h3 { color: $dark; border-bottom-color: $stone; }
+.markdown-body h1 { border-bottom: 5px solid $slate; padding-bottom: .3em; }
+.markdown-body a { color: $slate-text; font-weight: 600; }
+.markdown-body table th { background: $dark; color: #fff; }
+.markdown-body table tr:nth-child(2n) { background: #F2EFEC; }
+.markdown-body blockquote { border-left: .3em solid $tan; color: $dark; background: $cream; padding: .6em 1em; border-radius: 0 8px 8px 0; }
+.markdown-body details { border: 1px solid $stone; border-radius: 10px; padding: .5em .9em; margin: .5em 0; }
+.markdown-body summary { font-weight: 700; color: $slate-text; cursor: pointer; }
+.markdown-body img { background: transparent; }
+.figs { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 12px 0 18px; }
+.figs figure { margin: 0; text-align: center; flex: 1 1 180px; max-width: 260px; }
+.figs figcaption { font-size: .85em; color: #5A5F55; font-weight: 600; }
+.hero-img { display: block; max-width: 420px; width: 100%; margin: 8px auto 16px; }
+.licence { font-size: .8em; color: #5A5F55; border-top: 1px solid $stone; margin-top: 2em; padding-top: .8em; }

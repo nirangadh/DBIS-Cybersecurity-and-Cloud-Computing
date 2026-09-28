@@ -1,0 +1,5 @@
+# Lecturer-only material (tests, marking guides) must never be committed to this public repository.
+lecturer-only/
+lecturer/
+*.pdf
+.DS_Store
