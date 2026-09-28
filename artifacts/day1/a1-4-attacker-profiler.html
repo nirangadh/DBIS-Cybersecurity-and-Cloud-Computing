@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1.4 Attacker Profiler | DBIS-11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#262A20;--teal:#667C7E;--tealText:#566A6C;--orange:#C7A887;--tanText:#7D5F3F;--ink:#262A20;--muted:#5A5F55;
+--tealT:#E1E6E6;--navyT:#D9D5D2;--orangeT:#EDDDCD;--line:#D9D5D2;--ok:#3F6B4A;--bad:#9A3B2E;--okT:#E7EFE8;--badT:#F6E7E3;--bg:#F4F2EF;--edge:#8F8A84}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Open Sans","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:17px}
+a{color:var(--tealText)}
+.top{background:var(--navy);color:#fff;padding:14px 20px}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.leaf{width:40px;height:40px;border-radius:50%;background:var(--teal);display:grid;place-items:center;flex:none}
+.leaf svg{width:22px;height:22px;fill:#fff}
+.top h1{font-size:1.25rem;margin:0;line-height:1.2}
+.top p{margin:2px 0 0;font-size:.85rem;color:var(--navyT)}
+.top a{color:var(--orangeT);font-size:.85rem;margin-left:auto;white-space:nowrap}
+.bars{display:flex;gap:5px;margin:8px 0 0}.bars i{height:5px;border-radius:2px;display:block}
+.bars i:first-child{width:46px;background:var(--teal)}.bars i:last-child{width:22px;background:var(--orange)}
+.wrap{max-width:760px;margin:0 auto}
+main{padding:18px 16px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 0 rgba(28,54,120,.06)}
+.card+.card{margin-top:14px}
+h2{color:var(--navy);font-size:1.3rem;margin:0 0 8px}
+.steps{padding-left:1.3em;margin:8px 0 16px}.steps li{margin:4px 0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--navy);color:#fff;min-height:48px}
+.btn.alt{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn:focus-visible,.opt:focus-visible,.mv:focus-visible,.chip:focus-visible,.tab:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.meta{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.timer{height:10px;background:#E5E7EB;border-radius:6px;overflow:hidden;margin-bottom:14px}
+.timer b{display:block;height:100%;width:100%;background:var(--teal);transition:width .2s linear}
+.timer b.low{background:var(--orange)}
+.q{font-size:1.25rem;font-weight:600;color:var(--ink);margin:4px 0 16px;min-height:3.2em}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center;min-height:56px}
+.opt .k{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.opt strong{display:block;color:var(--navy)}
+.opt small{color:var(--muted);font-size:.85rem}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--okT)}
+.opt.wrong{border-color:var(--bad);background:var(--badT)}
+.fb{margin-top:14px;border-radius:12px;padding:14px;display:none}
+.fb.show{display:block}.fb.good{background:var(--okT)}.fb.no{background:var(--badT)}
+.fb p{margin:4px 0}
+.fb .h{font-weight:800}.fb.good .h{color:var(--ok)}.fb.no .h{color:var(--bad)}
+.help{margin-top:14px}
+.help summary{cursor:pointer;font-weight:700;color:var(--tealText)}
+.help dl{margin:8px 0 0}.help dt{font-weight:700;color:var(--navy)}.help dd{margin:0 0 8px}
+.big{font-size:2.6rem;font-weight:800;color:var(--navy);margin:0}
+.review{margin:12px 0 0;padding:0;list-style:none}
+.review li{border-top:1px solid var(--line);padding:10px 0}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;border-radius:20px;padding:2px 10px;background:var(--tealT);color:var(--tealText)}
+.streak{color:var(--tanText);font-weight:700}
+.rank{list-style:none;margin:0;padding:0;counter-reset:r}
+.rank li{display:flex;align-items:center;gap:10px;border:2px solid var(--edge);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.rank .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800}
+.rank .t{flex:1}.rank .t small{display:block;color:var(--muted)}
+.mv{font:inherit;width:44px;height:44px;border-radius:10px;border:2px solid var(--edge);background:#fff;cursor:pointer;font-size:1.1rem}
+.mv[disabled]{opacity:.35;cursor:default}
+table.cmp{width:100%;border-collapse:collapse;font-size:.92rem}
+table.cmp th{background:var(--navy);color:#fff;text-align:left;padding:8px}
+table.cmp td{border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+.clue{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;margin-bottom:14px}
+.two{display:grid;gap:14px}
+@media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
+.lab{font-weight:800;color:var(--navy);margin:0 0 6px}
+.hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:20px}
+.study{display:grid;gap:10px;margin:10px 0 16px}
+.word{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.word b{color:var(--navy);font-size:1.05rem}.word p{margin:2px 0 0;font-size:.92rem}.word em{color:var(--muted);font-size:.88rem}
+.hear{font:inherit;font-size:.8rem;font-weight:700;border:1.5px solid var(--edge);background:#fff;border-radius:16px;padding:2px 10px;cursor:pointer;margin-left:8px;color:var(--tealText)}
+.mode{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.mode label{border:2px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer}
+.mode input{margin-right:6px}
+.lvl{display:inline-block;background:var(--orangeT);color:var(--tanText);font-weight:800;border-radius:8px;padding:2px 10px;font-size:.85rem;margin-bottom:6px}
+.frame{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;line-height:1.6;margin:10px 0;position:sticky;top:6px;z-index:5;box-shadow:0 2px 8px rgba(38,42,32,.15)}
+.slot{display:inline-block;border-bottom:3px solid var(--edge);min-width:6em;padding:0 4px;font-weight:700}
+.slot.t{border-color:var(--tanText);color:var(--tanText)}.slot.v{border-color:var(--navy);color:var(--navy)}.slot.h{border-color:var(--tealText);color:var(--tealText)}
+.cols3{display:grid;gap:14px}@media(min-width:700px){.cols3{grid-template-columns:repeat(3,1fr)}}
+.chips{display:grid;gap:8px}
+.chip{font:inherit;font-size:.95rem;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:10px;padding:10px 12px;cursor:pointer;min-height:48px}
+.chip[aria-pressed="true"]{background:var(--orangeT);border-color:var(--navy);font-weight:700}
+.reg{list-style:none;padding:0;margin:10px 0 0}
+.reg li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.reg li.fixed .s{text-decoration:line-through;color:var(--muted)}
+.reg .fixnote{display:none;margin:6px 0 0;color:var(--ok);font-weight:600}.reg li.fixed .fixnote{display:block}
+.goal{font-weight:800;color:var(--tanText)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tab{font:inherit;font-size:.9rem;font-weight:700;border:2px solid var(--edge);background:#fff;border-radius:18px;padding:6px 12px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab.done::after{content:" \2713";color:var(--ok)}.tab[aria-selected="true"].done::after{color:#BFD8C4}
+svg.net{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+.net text{font-family:inherit;font-size:12px;fill:var(--ink)}
+.net .lbl{font-weight:700}
+.net .link{stroke:#B8B3AD;stroke-width:1.5}
+.net .box{fill:#fff;stroke:var(--edge);stroke-width:1.5;transition:fill .3s}
+.net .inf .box{fill:var(--orange);stroke:var(--tanText)}
+.net .lock .box{fill:var(--navy);stroke:var(--navy)}.net .lock text.in{fill:#fff}
+.net .spy .box{stroke:var(--tanText);stroke-dasharray:4 3;stroke-width:2.5}
+.net .busy .box{fill:var(--badT);stroke:var(--bad)}
+.net .fade{opacity:.25;transition:opacity .4s}.net .show{opacity:1}
+.net .door{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4;opacity:0;transition:opacity .5s}
+.narr{background:var(--navyT);border-radius:12px;padding:12px 14px;margin:12px 0;min-height:3.2em;font-weight:600}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body>
+<header class="top"><div class="wrap"><div class="leaf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.2 3.8 21.3l1.9.7 1-2.3c.5.2 1 .3 1.3.3C19 20 22 3 22 3c-1 2-8 2.3-13 3.3S2 11.5 2 13.5c0 2 1.8 3.8 1.8 3.8C7 8 17 8 17 8z"/></svg></div>
+<div><h1>Attacker Profiler</h1><p>A1.4  |  Day 1  |  Session 11.2</p><div class="bars"><i></i><i></i></div></div>
+<a href="../../index.html">Course site</a></div></header>
+<main class="wrap"><section class="card" id="start"><h2>How to play</h2><ol class="steps"><li>Read the clues in each case.</li><li>Choose the attacker and their reason.</li><li>Tap Check, then read why.</li></ol>
+<p>Each case gives 2 points: one for the attacker, one for the reason.</p><button class="btn" id="go">Start</button></section>
+<section class="card hidden" id="play">
+<div class="meta"><span id="count"></span><span id="pts"></span></div>
+<div class="timer"><b id="bar"></b></div>
+<div class="clue" id="clue" aria-live="polite"></div>
+<div class="two"><div><p class="lab">Who is the attacker?</p><div class="opts" id="who"></div></div>
+<div><p class="lab">What is their reason?</p><div class="opts" id="why"></div></div></div>
+<div class="row" style="margin-top:14px"><button class="btn" id="check" disabled>Check</button></div>
+<div class="fb" id="fb" aria-live="polite"><p class="h" id="fbh"></p><p id="fbw"></p><button class="btn" id="next">Next case</button></div>
+</section>
+<section class="card hidden" id="end"><h2>Your result</h2><p class="big" id="score"></p><p id="msg"></p>
+<div class="row"><button class="btn" id="again">Play again</button></div></section>
+<footer>DBIS-11 Cybersecurity and Cloud Computing. Your answers stay on this device. Nothing is sent or saved.</footer></main>
+<script>const DATA={"seconds": 45, "who": [{"key": "crim", "label": "Criminal"}, {"key": "angry", "label": "Angry insider"}, {"key": "care", "label": "Careless insider"}, {"key": "act", "label": "Activist"}, {"key": "gov", "label": "Government spy"}], "why": [{"key": "money", "label": "Money"}, {"key": "anger", "label": "Anger or revenge"}, {"key": "mistake", "label": "A mistake (no bad reason)"}, {"key": "cause", "label": "A cause or belief"}, {"key": "secrets", "label": "Secrets for their country"}], "cases": [{"clue": "A message on the screen asks for money to unlock TeaLeaf's files. The same message reached 300 other companies this week.", "who": "crim", "why": "money", "expl": "A payment demand sent to many companies at once is a criminal who wants money. It is not personal."}, {"clue": "At midnight, someone logs in with the account of a clerk who was fired last month. Hundreds of orders are deleted.", "who": "angry", "why": "anger", "expl": "The login belongs to a former staff member, and the harm is on purpose. That is an angry insider. The old login should have been removed."}, {"clue": "A sales officer sends the full customer list to a buyer. She was trying to send the price list.", "who": "care", "why": "mistake", "expl": "She is inside the business and did not mean any harm. That is a careless insider."}, {"clue": "TeaLeaf's homepage is replaced with a message: \"Stop using plastic tea bags!\"", "who": "act", "why": "cause", "expl": "The attacker wants people to see a message about a cause. That is an activist."}, {"clue": "Emails that look like they come from a bank ask staff to \"confirm\" their bank login.", "who": "crim", "why": "money", "expl": "Stealing bank logins leads to stolen money. That is a criminal. We study these tricks on Day 2."}, {"clue": "A group floods TeaLeaf's website with fake visitors, then posts online that TeaLeaf \"harms the environment\".", "who": "act", "why": "cause", "expl": "The group wants attention for its cause, not money. That is an activist."}, {"clue": "Over many months, someone quietly copies trade data from many tea exporters and sends it to officials in another country.", "who": "gov", "why": "secrets", "bonus": true, "expl": "Quiet, long-term copying for another country is government spying. This is rare for a small business, and it is not in the test."}]};
+
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fg(h){h=h.replace('#','');const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4));return (.2126*c[0]+.7152*c[1]+.0722*c[2])>.3?'#262A20':'#fff'}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function makeTimer(sec,onTick,onEnd){let left=sec*10,id=null;return{start(){this.stop();left=sec*10;onTick(1);id=setInterval(()=>{left--;onTick(left/(sec*10));if(left<=0){this.stop();onEnd()}},100)},stop(){if(id)clearInterval(id);id=null},used(){return sec-left/10}}}
+
+
+let cases=[],i=0,pts=0,pick={who:null,why:null},locked=false;
+const timer=makeTimer(DATA.seconds,f=>{const b=$('#bar');b.style.width=(f*100)+'%';b.classList.toggle('low',f<.3)},()=>check(true));
+function opts(id,list,slot){const box=$('#'+id);box.innerHTML='';list.forEach(o=>{const b=document.createElement('button');b.className='opt';b.dataset.k=o.key;b.setAttribute('aria-pressed','false');
+b.innerHTML=`<span><strong>${esc(o.label)}</strong></span>`;b.onclick=()=>{if(locked)return;pick[slot]=o.key;box.querySelectorAll('.opt').forEach(x=>{const on=x===b;x.style.borderColor=on?'var(--navy)':'';x.style.background=on?'var(--navyT)':'';x.setAttribute('aria-pressed',on)});$('#check').disabled=!(pick.who&&pick.why)};box.appendChild(b)})}
+function begin(){cases=shuffle(DATA.cases);i=0;pts=0;$('#start').classList.add('hidden');$('#end').classList.add('hidden');$('#play').classList.remove('hidden');show()}
+function show(){locked=false;pick={who:null,why:null};const c=cases[i];$('#count').textContent=`Case ${i+1} of ${cases.length}${c.bonus?' (bonus)':''}`;$('#pts').textContent=`${pts} points`;
+$('#clue').textContent=c.clue;opts('who',DATA.who,'who');opts('why',DATA.why,'why');$('#check').disabled=true;$('#check').classList.remove('hidden');$('#fb').className='fb';timer.start()}
+function check(timeout){if(locked)return;locked=true;timer.stop();const c=cases[i];const a=pick.who===c.who,b=pick.why===c.why;pts+=(a?1:0)+(b?1:0);
+[['who',c.who,pick.who],['why',c.why,pick.why]].forEach(([id,ans,p])=>$('#'+id).querySelectorAll('.opt').forEach(x=>{x.disabled=true;x.style.background='';x.style.borderColor='';if(x.dataset.k===ans)x.classList.add('right');else if(x.dataset.k===p)x.classList.add('wrong')}));
+const W=DATA.who.find(o=>o.key===c.who).label,Y=DATA.why.find(o=>o.key===c.why).label;
+$('#fbh').textContent=(timeout&&!(pick.who&&pick.why))?`Time is up. Attacker: ${W}. Reason: ${Y}.`:a&&b?'Both correct! +2':(a||b)?`One correct. Attacker: ${W}. Reason: ${Y}.`:`Not this time. Attacker: ${W}. Reason: ${Y}.`;
+$('#fbw').textContent=c.expl;$('#fb').className='fb show '+(a&&b?'good':'no');$('#fb').scrollIntoView({block:'nearest',behavior:'smooth'});$('#pts').textContent=`${pts} points`;$('#check').classList.add('hidden');$('#next').focus({preventScroll:true})}
+$('#check').onclick=()=>check(false);
+$('#next').onclick=()=>{i++;if(i<cases.length)show();else{$('#play').classList.add('hidden');$('#end').classList.remove('hidden');const max=cases.length*2;$('#score').textContent=`${pts} of ${max}`;
+$('#msg').textContent=pts>=max*0.8?'Great profiling. You can read an attacker from the clues.':'Look again at the reason in each case: money, anger, a mistake, or a cause.'}};
+$('#go').onclick=begin;$('#again').onclick=begin;
+</script>
+</body></html>

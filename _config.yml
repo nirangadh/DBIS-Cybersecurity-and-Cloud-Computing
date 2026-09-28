@@ -1,0 +1,6 @@
+title: DBIS-11 Cybersecurity and Cloud Computing
+description: Notes and games for the Diploma in Business Information Systems
+theme: jekyll-theme-primer
+exclude:
+  - lecturer-only
+  - README.md
