@@ -4,7 +4,12 @@ title: Licence
 
 # Licence
 
-**DBIS-11 Cybersecurity and Cloud Computing** teaching materials. &copy; 2026 Niranga Dharmaratna, NIBM School of Computing and Engineering.
+**DBIS-11 Cybersecurity and Cloud Computing** teaching materials.
+
+&copy; 2026
+Niranga Dharmaratna<br>
+School of Computing &amp; Engineering<br>
+National Institute of Business Management
 
 This repository uses two licences, because it holds two kinds of material.
 
@@ -19,7 +24,7 @@ You may copy, share and adapt the teaching content for non-commercial teaching, 
 
 ## How to credit this work
 
-> "DBIS-11 Cybersecurity and Cloud Computing" by Niranga Dharmaratna, NIBM School of Computing and Engineering, licensed under CC BY-NC-SA 4.0. https://nirangadh.github.io/DBIS-Cybersecurity-and-Cloud-Computing/
+> "DBIS-11 Cybersecurity and Cloud Computing" by Niranga Dharmaratna, School of Computing & Engineering, National Institute of Business Management, licensed under CC BY-NC-SA 4.0. https://nirangadh.github.io/DBIS-Cybersecurity-and-Cloud-Computing/
 
 ## Third-party material
 

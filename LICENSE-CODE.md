@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2026 Niranga Dharmaratna
+Copyright (c) 2026 Niranga Dharmaratna, School of Computing & Engineering,
+National Institute of Business Management
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
