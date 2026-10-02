@@ -15,20 +15,6 @@ Static site for GitHub Pages. No build step, no backend.
 | `_config.yml` | GitHub Pages settings (Primer theme for the notes) |
 | `LICENSE.md` | Licences: content CC BY-NC-SA 4.0, code MIT, plus third-party credits |
 
-## Publish on GitHub Pages
-
-1. Create a public repository, for example `dbis11-cyber-cloud`.
-2. Upload everything in this folder **except** `lecturer-only/`.
-3. Go to Settings, then Pages. Under "Build and deployment", choose "Deploy from a branch", branch `main`, folder `/ (root)`.
-4. Wait about a minute. The live site is https://nirangadh.github.io/DBIS-Cybersecurity-and-Cloud-Computing/
-
-Do **not** add a `.nojekyll` file: GitHub Pages needs its normal Jekyll build to turn the Markdown notes into web pages.
-
-## Keep tests private
-
-Daily test questions and marking guides are delivered **outside** this folder, in a separate `lecturer` folder, so they cannot be pushed by accident. `.gitignore` blocks `lecturer-only/` and `lecturer/` as a second safety net.
-
-Remember that `_config.yml` only stops files being published on the website. Anything committed to a public repository can still be read on github.com, and stays in its history.
 
 ## Licence
 
