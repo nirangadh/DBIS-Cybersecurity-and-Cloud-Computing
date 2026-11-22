@@ -4,7 +4,7 @@
 <title>A1.4 Attacker Profiler | DBIS-11</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#262A20;--teal:#667C7E;--tealText:#566A6C;--orange:#C7A887;--tanText:#7D5F3F;--ink:#262A20;--muted:#5A5F55;
+:root{--navy:#262A20;--teal:#667C7E;--tealText:#566A6C;--orange:#C7A887;--tanText:#6E5236;--ink:#262A20;--muted:#4E5349;
 --tealT:#E1E6E6;--navyT:#D9D5D2;--orangeT:#EDDDCD;--line:#D9D5D2;--ok:#3F6B4A;--bad:#9A3B2E;--okT:#E7EFE8;--badT:#F6E7E3;--bg:#F4F2EF;--edge:#8F8A84}
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -16,7 +16,7 @@ a{color:var(--tealText)}
 .leaf svg{width:22px;height:22px;fill:#fff}
 .top h1{font-size:1.25rem;margin:0;line-height:1.2}
 .top p{margin:2px 0 0;font-size:.85rem;color:var(--navyT)}
-.top a{color:var(--orangeT);font-size:.85rem;margin-left:auto;white-space:nowrap}
+.top .wrap>a{color:var(--orangeT);font-size:.85rem;margin-left:auto;white-space:nowrap;padding:10px 12px;border:1px solid rgba(237,221,205,.45);border-radius:999px}.top p a{color:inherit;font-weight:700;text-decoration:underline}
 .bars{display:flex;gap:5px;margin:8px 0 0}.bars i{height:5px;border-radius:2px;display:block}
 .bars i:first-child{width:46px;background:var(--teal)}.bars i:last-child{width:22px;background:var(--orange)}
 .wrap{max-width:760px;margin:0 auto}
@@ -72,7 +72,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:20px}
 .study{display:grid;gap:10px;margin:10px 0 16px}
 .word{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
 .word b{color:var(--navy);font-size:1.05rem}.word p{margin:2px 0 0;font-size:.92rem}.word em{color:var(--muted);font-size:.88rem}
-.hear{font:inherit;font-size:.8rem;font-weight:700;border:1.5px solid var(--edge);background:#fff;border-radius:16px;padding:2px 10px;cursor:pointer;margin-left:8px;color:var(--tealText)}
+.hear{font:inherit;font-size:.8rem;font-weight:700;border:1.5px solid var(--edge);background:#fff;border-radius:16px;padding:8px 12px;min-height:36px;cursor:pointer;margin-left:8px;color:var(--tealText)}
 .mode{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
 .mode label{border:2px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer}
 .mode input{margin-right:6px}
@@ -126,13 +126,15 @@ svg.net{width:100%;height:auto;background:#fff;border:1px solid var(--line);bord
 .grid td.miss{background:var(--badT)}.grid td.hit{background:var(--okT)}
 .log{font-family:Consolas,Menlo,monospace;font-size:.88rem;background:#262A20;color:#EDDDCD;border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+body.relax .timer{display:none}
 </style></head>
 <body>
 <header class="top"><div class="wrap"><div class="leaf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.2 3.8 21.3l1.9.7 1-2.3c.5.2 1 .3 1.3.3C19 20 22 3 22 3c-1 2-8 2.3-13 3.3S2 11.5 2 13.5c0 2 1.8 3.8 1.8 3.8C7 8 17 8 17 8z"/></svg></div>
-<div><h1>Attacker Profiler</h1><p>A1.4  |  Day 1  |  Session 11.2</p><div class="bars"><i></i><i></i></div></div>
+<div><h1>Attacker Profiler</h1><p>A1.4  |  Day 1  |  <a href="../../notes/11-02.html">Session 11.2</a></p><div class="bars"><i></i><i></i></div></div>
 <a href="../../index.html">Course site</a></div></header>
 <main class="wrap"><section class="card" id="start"><div class="hero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 216" role="img" aria-label="An attacker in a dark hoodie works at a laptop late at night"><title>An attacker in a dark hoodie works at a laptop late at night</title><rect x="10" y="10" width="280" height="196" rx="18" fill="#262A20"/><circle cx="246" cy="48" r="16" fill="#EDDDCD" opacity=".9"/><circle cx="252" cy="42" r="14" fill="#262A20"/><circle cx="40" cy="40" r="1.6" fill="#EDDDCD"/><circle cx="70" cy="28" r="1.6" fill="#EDDDCD"/><circle cx="110" cy="52" r="1.6" fill="#EDDDCD"/><circle cx="200" cy="30" r="1.6" fill="#EDDDCD"/><circle cx="180" cy="70" r="1.6" fill="#EDDDCD"/><ellipse cx="150" cy="118" rx="80" ry="60" fill="#3E4A40"/><g transform="translate(90 52) scale(1.0)"><ellipse cx="60" cy="31" rx="25" ry="27" fill="#3A3F33"/><rect x="53" y="42" width="14" height="20" fill="#734A2E"/><path d="M53 50 Q60 56 67 50 L67 56 Q60 60 53 56 Z" fill="#5A3A24"/><path d="M36 72 Q36 59 48 57 L72 57 Q84 59 84 72 L83 122 Q60 127 37 122 Z" fill="#3A3F33"/><path d="M48 57 Q60 72 72 57 L70 57 Q60 66 50 57 Z" fill="#2B2F26"/><path d="M55 64 L54 84 M65 64 L66 84" stroke="#D9D5D2" stroke-width="1.5"/><path d="M44 100 L76 100 L73 116 L47 116 Z" fill="#31352B"/><path d="M38 66 L33 96" stroke="#3A3F33" stroke-width="12" stroke-linecap="round"/><path d="M33 96 L50 112" stroke="#3A3F33" stroke-width="11" stroke-linecap="round"/><path d="M33 96 L50 112" stroke="#34382D" stroke-width="2" stroke-linecap="round" opacity=".5"/><path d="M82 66 L87 96" stroke="#3A3F33" stroke-width="12" stroke-linecap="round"/><path d="M87 96 L70 112" stroke="#3A3F33" stroke-width="11" stroke-linecap="round"/><path d="M87 96 L70 112" stroke="#34382D" stroke-width="2" stroke-linecap="round" opacity=".5"/><circle cx="50" cy="115" r="5.8" fill="#734A2E"/><path d="M46 117 Q50 120 54 117" stroke="#5A3A24" stroke-width="1" fill="none"/><circle cx="70" cy="115" r="5.8" fill="#734A2E"/><path d="M66 117 Q70 120 74 117" stroke="#5A3A24" stroke-width="1" fill="none"/><ellipse cx="43" cy="32" rx="3.2" ry="5" fill="#5A3A24"/><ellipse cx="77" cy="32" rx="3.2" ry="5" fill="#5A3A24"/><ellipse cx="60" cy="30" rx="17" ry="19" fill="#734A2E"/><path d="M36 42 C33 2 87 2 84 42 L78 42 C78 14 42 14 42 42 Z" fill="#3A3F33"/><path d="M42 42 C42 14 78 14 78 42" fill="none" stroke="#282C23" stroke-width="2"/><ellipse cx="53.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><ellipse cx="66.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><path d="M50 26.2 L56 26 M64 26 L70 26.2" stroke="#1F1B17" stroke-width="1.8" stroke-linecap="round"/><path d="M60 31 Q62.8 37 59.4 37.6" stroke="#5A3A24" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M56 42.5 L64 42.5" stroke="#262A20" stroke-width="1.6" stroke-linecap="round"/></g><rect x="40" y="150" width="220" height="10" rx="2" fill="#55686A"/><rect x="46" y="160" width="208" height="56" fill="#4E5F61"/><rect x="52" y="168" width="77" height="4" rx="2" fill="#3E4C4D"/><path d="M122 150 L178 150 L174 114 L126 114 Z" fill="#D9D5D2" stroke="#A29F9D" stroke-width="1.2"/><path d="M145.0 128 C142.0 138 152.0 140 155.0 126 C151.0 131 148.0 132 145.0 128 Z" fill="#667C7E"/><rect x="116" y="150" width="68" height="5" rx="2" fill="#ADAAA8"/></svg></div><h2>How to play</h2><ol class="steps"><li>Read the clues in each case.</li><li>Choose the attacker and their reason.</li><li>Tap Check, then read why.</li></ol>
-<p>Each case gives 2 points: one for the attacker, one for the reason.</p><button class="btn" id="go">Start</button></section>
+<p>Each case gives 2 points: one for the attacker, one for the reason.</p><p class="lab">Choose your mode</p><div class="mode" role="radiogroup" aria-label="Mode"><label><input type="radio" name="mode" value="0" checked>Relaxed: no clock</label><label><input type="radio" name="mode" value="1">Challenge: 45 seconds, with a speed bonus</label></div>
+<button class="btn" id="go">Start</button></section>
 <section class="card hidden" id="play">
 <div class="meta"><span id="count"></span><span id="pts"></span></div>
 <div class="timer"><b id="bar"></b></div>
@@ -151,7 +153,8 @@ const $=s=>document.querySelector(s);
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function fg(h){h=h.replace('#','');const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4));return (.2126*c[0]+.7152*c[1]+.0722*c[2])>.3?'#262A20':'#fff'}
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
-function makeTimer(sec,onTick,onEnd){let left=sec*10,id=null;return{start(){this.stop();left=sec*10;onTick(1);id=setInterval(()=>{left--;onTick(left/(sec*10));if(left<=0){this.stop();onEnd()}},100)},stop(){if(id)clearInterval(id);id=null},used(){return sec-left/10}}}
+const RELAX=()=>{const m=document.querySelector('input[name=mode]:checked');return !!m&&m.value==='0'};
+function makeTimer(sec,onTick,onEnd){let left=sec*10,id=null;return{start(){this.stop();left=sec*10;onTick(1);document.body.classList.toggle('relax',RELAX());if(RELAX())return;id=setInterval(()=>{left--;onTick(left/(sec*10));if(left<=0){this.stop();onEnd()}},100)},stop(){if(id)clearInterval(id);id=null},used(){return RELAX()?sec:sec-left/10}}}
 
 
 let cases=[],i=0,pts=0,pick={who:null,why:null},locked=false;
