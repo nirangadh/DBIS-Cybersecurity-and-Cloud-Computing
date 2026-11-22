@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A5.5 Policy Builder | DBIS-11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#262A20;--teal:#667C7E;--tealText:#566A6C;--orange:#C7A887;--tanText:#7D5F3F;--ink:#262A20;--muted:#5A5F55;
+--tealT:#E1E6E6;--navyT:#D9D5D2;--orangeT:#EDDDCD;--line:#D9D5D2;--ok:#3F6B4A;--bad:#9A3B2E;--okT:#E7EFE8;--badT:#F6E7E3;--bg:#F4F2EF;--edge:#8F8A84}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Open Sans","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:17px}
+a{color:var(--tealText)}
+.top{background:var(--navy);color:#fff;padding:14px 20px}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.leaf{width:40px;height:40px;border-radius:50%;background:var(--teal);display:grid;place-items:center;flex:none}
+.leaf svg{width:22px;height:22px;fill:#fff}
+.top h1{font-size:1.25rem;margin:0;line-height:1.2}
+.top p{margin:2px 0 0;font-size:.85rem;color:var(--navyT)}
+.top a{color:var(--orangeT);font-size:.85rem;margin-left:auto;white-space:nowrap}
+.bars{display:flex;gap:5px;margin:8px 0 0}.bars i{height:5px;border-radius:2px;display:block}
+.bars i:first-child{width:46px;background:var(--teal)}.bars i:last-child{width:22px;background:var(--orange)}
+.wrap{max-width:760px;margin:0 auto}
+main{padding:18px 16px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 0 rgba(28,54,120,.06)}
+.card+.card{margin-top:14px}
+h2{color:var(--navy);font-size:1.3rem;margin:0 0 8px}
+.steps{padding-left:1.3em;margin:8px 0 16px}.steps li{margin:4px 0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--navy);color:#fff;min-height:48px}
+.btn.alt{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn:focus-visible,.opt:focus-visible,.mv:focus-visible,.chip:focus-visible,.tab:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.meta{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.timer{height:10px;background:#E5E7EB;border-radius:6px;overflow:hidden;margin-bottom:14px}
+.timer b{display:block;height:100%;width:100%;background:var(--teal);transition:width .2s linear}
+.timer b.low{background:var(--orange)}
+.q{font-size:1.25rem;font-weight:600;color:var(--ink);margin:4px 0 16px;min-height:3.2em}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center;min-height:56px}
+.opt .k{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.opt strong{display:block;color:var(--navy)}
+.opt small{color:var(--muted);font-size:.85rem}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--okT)}
+.opt.wrong{border-color:var(--bad);background:var(--badT)}
+.fb{margin-top:14px;border-radius:12px;padding:14px;display:none}
+.fb.show{display:block}.fb.good{background:var(--okT)}.fb.no{background:var(--badT)}
+.fb p{margin:4px 0}
+.fb .h{font-weight:800}.fb.good .h{color:var(--ok)}.fb.no .h{color:var(--bad)}
+.help{margin-top:14px}
+.help summary{cursor:pointer;font-weight:700;color:var(--tealText)}
+.help dl{margin:8px 0 0}.help dt{font-weight:700;color:var(--navy)}.help dd{margin:0 0 8px}
+.big{font-size:2.6rem;font-weight:800;color:var(--navy);margin:0}
+.review{margin:12px 0 0;padding:0;list-style:none}
+.review li{border-top:1px solid var(--line);padding:10px 0}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;border-radius:20px;padding:2px 10px;background:var(--tealT);color:var(--tealText)}
+.streak{color:var(--tanText);font-weight:700}
+.rank{list-style:none;margin:0;padding:0;counter-reset:r}
+.rank li{display:flex;align-items:center;gap:10px;border:2px solid var(--edge);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.rank .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800}
+.rank .t{flex:1}.rank .t small{display:block;color:var(--muted)}
+.mv{font:inherit;width:44px;height:44px;border-radius:10px;border:2px solid var(--edge);background:#fff;cursor:pointer;font-size:1.1rem}
+.mv[disabled]{opacity:.35;cursor:default}
+table.cmp{width:100%;border-collapse:collapse;font-size:.92rem}
+table.cmp th{background:var(--navy);color:#fff;text-align:left;padding:8px}
+table.cmp td{border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+.clue{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;margin-bottom:14px}
+.two{display:grid;gap:14px}
+@media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
+.lab{font-weight:800;color:var(--navy);margin:0 0 6px}
+.hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:20px}
+.study{display:grid;gap:10px;margin:10px 0 16px}
+.word{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.word b{color:var(--navy);font-size:1.05rem}.word p{margin:2px 0 0;font-size:.92rem}.word em{color:var(--muted);font-size:.88rem}
+.hear{font:inherit;font-size:.8rem;font-weight:700;border:1.5px solid var(--edge);background:#fff;border-radius:16px;padding:2px 10px;cursor:pointer;margin-left:8px;color:var(--tealText)}
+.mode{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.mode label{border:2px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer}
+.mode input{margin-right:6px}
+.lvl{display:inline-block;background:var(--orangeT);color:var(--tanText);font-weight:800;border-radius:8px;padding:2px 10px;font-size:.85rem;margin-bottom:6px}
+.frame{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;line-height:1.6;margin:10px 0;position:sticky;top:6px;z-index:5;box-shadow:0 2px 8px rgba(38,42,32,.15)}
+.slot{display:inline-block;border-bottom:3px solid var(--edge);min-width:6em;padding:0 4px;font-weight:700}
+.slot.t{border-color:var(--tanText);color:var(--tanText)}.slot.v{border-color:var(--navy);color:var(--navy)}.slot.h{border-color:var(--tealText);color:var(--tealText)}
+.cols3{display:grid;gap:14px}@media(min-width:700px){.cols3{grid-template-columns:repeat(3,1fr)}}
+.chips{display:grid;gap:8px}
+.chip{font:inherit;font-size:.95rem;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:10px;padding:10px 12px;cursor:pointer;min-height:48px}
+.chip[aria-pressed="true"]{background:var(--orangeT);border-color:var(--navy);font-weight:700}
+.reg{list-style:none;padding:0;margin:10px 0 0}
+.reg li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.reg li.fixed .s{text-decoration:line-through;color:var(--muted)}
+.reg .fixnote{display:none;margin:6px 0 0;color:var(--ok);font-weight:600}.reg li.fixed .fixnote{display:block}
+.goal{font-weight:800;color:var(--tanText)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tab{font:inherit;font-size:.9rem;font-weight:700;border:2px solid var(--edge);background:#fff;border-radius:18px;padding:6px 12px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab.done::after{content:" \2713";color:var(--ok)}.tab[aria-selected="true"].done::after{color:#BFD8C4}
+svg.net{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+.net text{font-family:inherit;font-size:12px;fill:var(--ink)}
+.net .lbl{font-weight:700}
+.net .link{stroke:#B8B3AD;stroke-width:1.5}
+.net .box{fill:#fff;stroke:var(--edge);stroke-width:1.5;transition:fill .3s}
+.net .inf .box{fill:var(--orange);stroke:var(--tanText)}
+.net .lock .box{fill:var(--navy);stroke:var(--navy)}.net .lock text.in{fill:#fff}
+.net .spy .box{stroke:var(--tanText);stroke-dasharray:4 3;stroke-width:2.5}
+.net .busy .box{fill:var(--badT);stroke:var(--bad)}
+.net .fade{opacity:.25;transition:opacity .4s}.net .show{opacity:1}
+.net .door{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4;opacity:0;transition:opacity .5s}
+.narr{background:var(--navyT);border-radius:12px;padding:12px 14px;margin:12px 0;min-height:3.2em;font-weight:600}
+.hero{display:flex;justify-content:center;margin:-6px 0 8px}.hero svg{width:100%;max-width:320px;height:auto}
+.pic{display:flex;justify-content:center;margin:8px 0}.pic svg{width:100%;max-width:240px;height:auto}
+.mail{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.mail .hd{background:var(--navyT);padding:10px 12px;font-size:.92rem}.mail .hd b{color:var(--navy)}
+.mail .bd{padding:12px;font-size:1rem;line-height:1.55}
+.mail .kind{display:inline-block;font-size:.75rem;font-weight:800;background:var(--orangeT);color:var(--tanText);border-radius:6px;padding:1px 8px;margin-bottom:4px}
+.flag{cursor:pointer;border-bottom:2px dotted transparent;border-radius:3px}
+.flag.found{background:var(--badT);border-bottom-color:var(--bad)}
+.flag.shown{background:var(--badT)}
+.flaglist{margin:8px 0 0;padding-left:1.2em}.flaglist li{margin:4px 0}
+.story{font-size:1.08rem}.story .scene{background:var(--navyT);border-radius:12px;padding:14px;margin-bottom:12px}
+.path{font-size:.9rem;color:var(--muted)}
+.meter{height:14px;border-radius:8px;background:#E5E1DC;overflow:hidden;margin:8px 0}.meter b{display:block;height:100%;width:0;transition:width .3s}
+.pw{font:inherit;font-size:1.15rem;width:100%;padding:12px;border:2px solid var(--edge);border-radius:10px}
+.pw:focus{outline:3px solid var(--navy);outline-offset:1px}
+.grid{border-collapse:collapse;width:100%;font-size:.9rem}.grid th,.grid td{border:1px solid var(--line);padding:6px;text-align:center}.grid th{background:var(--navy);color:#fff}.grid td:first-child{text-align:left;font-weight:700}
+.grid input{width:22px;height:22px}
+.grid th:first-child,.grid td:first-child{position:sticky;left:0;z-index:1;background:#fff;min-width:92px}.grid th:first-child{background:var(--navy)}
+.grid td.miss{background:var(--badT)}.grid td.hit{background:var(--okT)}
+.log{font-family:Consolas,Menlo,monospace;font-size:.88rem;background:#262A20;color:#EDDDCD;border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.stage{font-weight:800;color:var(--navy);margin:0 0 6px}
+.qbox{margin-top:12px}
+.story{background:var(--orangeT);border-radius:12px;padding:10px 12px;margin:0 0 10px}
+.story b{color:var(--navy)}
+.stack{display:grid;gap:6px;margin:8px 0}
+.lyr{display:grid;grid-template-columns:1fr 130px;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.lyr .nm{font-weight:700}.lyr .nm small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.who{font:inherit;font-weight:800;border-radius:18px;border:2px solid var(--edge);padding:8px 6px;background:var(--navyT);cursor:pointer;min-height:44px}
+.who.you{background:#7D5F3F;color:#fff;border-color:#7D5F3F}.who.pro{background:#667C7E;color:#fff;border-color:#667C7E}
+.lyr.ok{border:2px solid var(--ok)}.lyr.bad{border:2px solid var(--bad)}
+.meters{display:grid;gap:8px;margin:8px 0 12px}
+.cap{font-size:.9rem;font-weight:700}.cap .tr{height:18px;border-radius:9px;background:var(--navyT);overflow:hidden;margin-top:3px}
+.cap .tr b{display:block;height:100%;background:#667C7E;transition:width .25s}.cap .tr b.full{background:#9A3B2E}
+.vms{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(min-width:560px){.vms{grid-template-columns:1fr 1fr 1fr}}
+.vm{font:inherit;text-align:left;border:2px solid var(--edge);border-radius:12px;padding:8px 10px;background:#fff;cursor:pointer;min-height:56px}
+.vm b{display:block}.vm small{color:var(--muted)}.vm.on{background:var(--navy);color:#fff;border-color:var(--navy)}.vm.on small{color:#EDDDCD}
+.vm.need{box-shadow:inset 0 0 0 2px #C7A887}.vm.shake{animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.ctl{margin:8px 0 12px}.ctl label{font-weight:700;display:block}.ctl input[type=range]{width:100%;accent-color:#667C7E}
+.tog{display:flex;gap:10px;align-items:flex-start;margin:6px 0;font-weight:600}.tog input{width:22px;height:22px;accent-color:#7D5F3F;flex:none;margin-top:1px}
+.costs{display:grid;gap:12px}@media(min-width:600px){.costs{grid-template-columns:1fr 1fr}}
+.cost{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.cost h3{margin:0 0 6px;font-size:1rem;color:var(--navy)}.cost .n{font-size:1.35rem;font-weight:800}
+.cost .bar{height:14px;border-radius:7px;background:var(--navyT);margin:6px 0 2px;overflow:hidden}.cost .bar b{display:block;height:100%}
+.cost.win{border:2px solid var(--ok)}
+.small{font-size:.85rem;color:var(--muted)}
+
+.console{border:2px solid #262A20;border-radius:12px;overflow:hidden;background:#fff}
+.console .bar{background:#262A20;color:#EDDDCD;font-weight:800;padding:8px 12px;font-size:.9rem}
+.set{display:grid;grid-template-columns:1fr;gap:4px;padding:10px 12px;border-top:1px solid var(--line);cursor:pointer;width:100%;text-align:left;font:inherit;background:#fff;border-left:0;border-right:0;border-bottom:0;min-height:52px}
+.set .nm{font-weight:700}.set .val{justify-self:start;font-family:Consolas,Menlo,monospace;font-size:.85rem;background:var(--navyT);border-radius:6px;padding:3px 7px}
+.set.flag{background:#FBEBEB}.set.flag .nm::before{content:"\26A0  ";color:#9A3B2E}
+.set.ok{box-shadow:inset 4px 0 0 var(--ok)}.set.bad{box-shadow:inset 4px 0 0 var(--bad)}
+.set .why{grid-column:1/-1;font-size:.88rem;color:var(--ink);display:none}.set.shown .why{display:block}
+.prov{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;margin-bottom:10px}
+.prov h3{margin:0 0 6px;color:var(--navy)}.prov ul{margin:0 0 8px;padding-left:18px}.prov li{margin:3px 0}
+.chk{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.chk span{font-weight:600}.yn{font:inherit;font-weight:800;border:2px solid var(--edge);border-radius:16px;padding:6px 12px;background:#fff;cursor:pointer;min-height:40px}
+.yn.on{background:var(--navy);color:#fff;border-color:var(--navy)}.yn.r{outline:3px solid var(--ok)}.yn.w{outline:3px solid var(--bad)}
+.tally{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.tally div{border-radius:10px;padding:8px;background:var(--navyT);text-align:center;font-weight:800}
+.rules{display:grid;gap:8px}.rule{font:inherit;text-align:left;border:2px solid var(--edge);border-radius:12px;padding:10px 12px;background:#fff;cursor:pointer;min-height:48px}
+.rule.in{background:var(--navy);color:#fff;border-color:var(--navy)}.rule.good{box-shadow:inset 5px 0 0 var(--ok)}.rule.badr{box-shadow:inset 5px 0 0 var(--bad)}
+.rule small{display:block;font-weight:400;margin-top:4px}.rule.in small{color:#EDDDCD}
+.policy{background:var(--orangeT);border-radius:12px;padding:12px 14px;margin-top:10px}.policy h3{margin:0 0 6px}.policy ol{margin:0;padding-left:20px}
+</style></head>
+<body>
+<header class="top"><div class="wrap"><div class="leaf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.2 3.8 21.3l1.9.7 1-2.3c.5.2 1 .3 1.3.3C19 20 22 3 22 3c-1 2-8 2.3-13 3.3S2 11.5 2 13.5c0 2 1.8 3.8 1.8 3.8C7 8 17 8 17 8z"/></svg></div>
+<div><h1>Policy Builder</h1><p>A5.5  |  Day 5  |  Session 11.10</p><div class="bars"><i></i><i></i></div></div>
+<a href="../../index.html">Course site</a></div></header>
+<main class="wrap"><section class="card" id="start"><div class="hero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 250" role="img" aria-label="Sachini is about to paste TeaLeaf's customer list, with names and phone numbers, into a free AI chatbot. A red stop sign warns her."><title>Sachini is about to paste TeaLeaf's customer list, with names and phone numbers, into a free AI chatbot. A red stop sign warns her.</title><ellipse cx="165" cy="238" rx="155" ry="11" fill="#D9D5D2"/><ellipse cx="165" cy="136" rx="160" ry="104" fill="#EDDDCD"/><g transform="translate(18 58) scale(1.0)"><path d="M41 24 C36 48 38 64 46 70 L74 70 C82 64 84 48 79 24 Z" fill="#1F1B17"/><rect x="53" y="42" width="14" height="20" fill="#6E4128"/><path d="M53 50 Q60 56 67 50 L67 56 Q60 60 53 56 Z" fill="#583420"/><path d="M36 72 Q36 59 48 57 L72 57 Q84 59 84 72 L83 122 Q60 127 37 122 Z" fill="#9C7F5F"/><path d="M52 57 L60 88 L68 57 Z" fill="#EDDDCD"/><path d="M50 57 L60 92 L56 70 L46 60 Z M70 57 L60 92 L64 70 L74 60 Z" fill="#79634A"/><circle cx="60" cy="100" r="1.6" fill="#5D4C39"/><path d="M38 66 L33 96" stroke="#9C7F5F" stroke-width="12" stroke-linecap="round"/><path d="M33 96 L50 112" stroke="#9C7F5F" stroke-width="11" stroke-linecap="round"/><path d="M33 96 L50 112" stroke="#8C7255" stroke-width="2" stroke-linecap="round" opacity=".5"/><path d="M82 66 L87 96" stroke="#9C7F5F" stroke-width="12" stroke-linecap="round"/><path d="M87 96 L70 112" stroke="#9C7F5F" stroke-width="11" stroke-linecap="round"/><path d="M87 96 L70 112" stroke="#8C7255" stroke-width="2" stroke-linecap="round" opacity=".5"/><circle cx="50" cy="115" r="5.8" fill="#6E4128"/><path d="M46 117 Q50 120 54 117" stroke="#583420" stroke-width="1" fill="none"/><circle cx="70" cy="115" r="5.8" fill="#6E4128"/><path d="M66 117 Q70 120 74 117" stroke="#583420" stroke-width="1" fill="none"/><ellipse cx="43" cy="32" rx="3.2" ry="5" fill="#583420"/><ellipse cx="77" cy="32" rx="3.2" ry="5" fill="#583420"/><ellipse cx="60" cy="30" rx="17" ry="19" fill="#6E4128"/><path d="M42.5 30 C40 11 52 7 60 7 C70 7 81 11 77.5 30 C76 20 70 16 60 16 C51 16 45 20 42.5 30 Z" fill="#1F1B17"/><path d="M60 9 C52 9 44 14 43 26 C50 22 55 17 60 14 Z" fill="#1F1B17"/><ellipse cx="53.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><ellipse cx="66.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><path d="M50 26 L56 25.3 M64 25.3 L70 26" stroke="#1F1B17" stroke-width="1.8" stroke-linecap="round"/><path d="M60 31 Q62.8 37 59.4 37.6" stroke="#583420" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M54 41 Q60 46.5 66 41" stroke="#262A20" stroke-width="1.6" fill="#FFFFFF" stroke-linecap="round"/></g><path d="M50 174 L104 174 L100 138 L54 138 Z" fill="#D9D5D2" stroke="#A29F9D" stroke-width="1.2"/><path d="M72.0 152 C69.0 162 79.0 164 82.0 150 C78.0 155 75.0 156 72.0 152 Z" fill="#667C7E"/><rect x="44" y="174" width="66" height="5" rx="2" fill="#ADAAA8"/><rect x="20" y="182" width="130" height="8" rx="3" fill="#9C7F5F"/><rect x="168" y="32" width="150" height="150" rx="12" fill="#FFFFFF" stroke="#262A20" stroke-width="2.5"/><rect x="168" y="32" width="150" height="24" rx="12" fill="#4E5F61"/><rect x="168" y="44" width="150" height="12" fill="#4E5F61"/><text x="243" y="49" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">Free AI chat</text><rect x="180" y="66" width="104" height="22" rx="8" fill="#E7EBEC"/><text x="232" y="81" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8.5" font-weight="700" fill="#262A20" text-anchor="middle">How can I help?</text><rect x="196" y="96" width="112" height="56" rx="8" fill="#F3E3D3"/><text x="252" y="110" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8.5" font-weight="800" fill="#262A20" text-anchor="middle">Customer list:</text><text x="252" y="123" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="7.5" font-weight="600" fill="#4E5F61" text-anchor="middle">Hans M. +49...</text><text x="252" y="133" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="7.5" font-weight="600" fill="#4E5F61" text-anchor="middle">A. Perera 077...</text><text x="252" y="143" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="7.5" font-weight="600" fill="#4E5F61" text-anchor="middle">J. Silva 071...</text><circle cx="306" cy="160" r="15" fill="#9A3B2E"/><rect x="298" y="157" width="16" height="6" rx="1.5" fill="#FFFFFF"/><path d="M118 120 C140 110 160 112 190 120" fill="none" stroke="#4E5F61" stroke-width="2.5" stroke-dasharray="5 4"/><path d="M184 113 L196 121 L183 126 Z" fill="#4E5F61"/></svg></div><h2>How to play</h2><ol class="steps"><li>Build TeaLeaf's security rules for staff.</li><li>Tap each rule you would <strong>put in the policy</strong>. Tap again to take it out.</li><li>Then tap <strong>Check my policy</strong>, and answer three questions about AI chatbots.</li></ol>
+<p>A security policy is a short list of rules everyone at TeaLeaf must follow. Some rules here sound helpful, but are not safe.</p><button class="btn" id="go">Start</button></section>
+<section class="card hidden" id="play">
+<div class="meta"><span id="count">In the policy: 0</span><span id="pts"></span></div>
+<div class="rules" id="rules"></div>
+<div class="fb" id="fb"><p class="h"></p><p class="w"></p></div>
+<div class="policy hidden" id="pol"><h3>TeaLeaf staff security policy</h3><ol id="polL"></ol></div>
+<div class="row" style="margin-top:10px"><button class="btn" id="check">Check my policy</button><button class="btn hidden" id="toq">Answer three questions</button></div>
+<div class="qbox" id="qb"></div>
+</section>
+<section class="card hidden" id="end"><h2>Your result</h2><p class="big" id="score"></p><p id="msg"></p>
+<div class="row"><button class="btn" id="again">Play again</button></div></section>
+<footer>Your answers stay on this device. Nothing is sent or saved.<br>DBIS-11 Cybersecurity and Cloud Computing. &copy; 2026 Niranga Dharmaratna, School of Computing &amp; Engineering, National Institute of Business Management. Content <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, code MIT. <a href="../../LICENSE.html">Licence details</a>.</footer></main>
+<script>const DATA={"rules": [{"t": "Use your own login. Never share it.", "good": true, "why": "Accountability (the diary) needs a name for every action."}, {"t": "Turn on MFA for email and the cloud.", "good": true, "why": "A stolen password is not enough on its own."}, {"t": "Never paste customer data into free AI chatbots or other outside apps.", "good": true, "why": "Personal data would leave TeaLeaf, and TeaLeaf cannot get it back or control it."}, {"t": "Share cloud files with named people only, never 'anyone with the link'.", "good": true, "why": "Stops misconfiguration: files left open by mistake."}, {"t": "Report a lost phone or a strange email to Nadee at once.", "good": true, "why": "Fast reporting limits the damage. This is the Respond job."}, {"t": "Collect only the customer data we need.", "good": true, "why": "A main PDPA duty: only what you need, for the reason you gave."}, {"t": "Lock your screen when you leave your desk.", "good": true, "why": "Stops anyone walking past from using your login."}, {"t": "Keep a copy of the customer list on your own phone to work from home.", "good": false, "why": "Personal data on a personal phone is easy to lose and hard to control."}, {"t": "Share one team password, so work is faster.", "good": false, "why": "Nobody can tell who did what. Accountability fails."}, {"t": "Use any free app you like, if it saves time.", "good": false, "why": "Free apps may keep or reuse TeaLeaf's data. Use only approved tools."}, {"t": "Send customer lists from your personal Gmail when office email is slow.", "good": false, "why": "The data leaves TeaLeaf's control and its security."}, {"t": "Turn off MFA if it is annoying.", "good": false, "why": "Removes a layer of defence. Stolen passwords work again."}], "qs": [{"q": "Sachini wants to paste the customer list into a free AI chatbot to write sales emails. What is the biggest problem?", "o": ["Customers' personal data leaves TeaLeaf, and TeaLeaf cannot control what happens to it", "The emails might have spelling mistakes", "The chatbot is too slow"], "a": 0, "why": "Names and phone numbers are personal data. Once pasted, they are with an outside company that may keep or reuse them."}, {"q": "Which PDPA duty does this also break?", "o": ["Use data only for the reason you gave, and keep it safe", "Pay for what you use", "Grow and shrink with demand"], "a": 0, "why": "Customers gave their data to buy tea, not to be sent to a chatbot company. And it is no longer kept safe."}, {"q": "What is a safer way for Sachini to get help writing sales emails?", "o": ["Ask the AI to improve an email with no customer details in it", "Paste only half the customer list", "Use her personal phone instead"], "a": 0, "why": "No personal data, no problem. Or use an AI tool TeaLeaf has approved, with a proper business contract."}]};
+
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fg(h){h=h.replace('#','');const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4));return (.2126*c[0]+.7152*c[1]+.0722*c[2])>.3?'#262A20':'#fff'}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function makeTimer(sec,onTick,onEnd){let left=sec*10,id=null;return{start(){this.stop();left=sec*10;onTick(1);id=setInterval(()=>{left--;onTick(left/(sec*10));if(left<=0){this.stop();onEnd()}},100)},stop(){if(id)clearInterval(id);id=null},used(){return sec-left/10}}}
+
+
+function askQ(box,q,onDone){box.innerHTML=`<p class="lab">${esc(q.q)}</p><div class="opts"></div><div class="fb"><p class="h"></p><p class="w"></p></div>`;
+ const o=box.querySelector('.opts'),fb=box.querySelector('.fb');
+ (q.keep?q.o.map((t,i)=>({t,i})):shuffle(q.o.map((t,i)=>({t,i})))).forEach(({t,i})=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<span><strong>${esc(t)}</strong></span>`;
+  b.onclick=()=>{o.querySelectorAll('.opt').forEach(x=>x.disabled=true);const ok=i===q.a;b.classList.add(ok?'right':'wrong');if(!ok)[...o.children].find(x=>x.textContent===q.o[q.a]).classList.add('right');
+   fb.querySelector('.h').textContent=ok?'Correct!':'Not this time. The answer is: '+q.o[q.a];fb.querySelector('.w').textContent=q.why;fb.className='fb show '+(ok?'good':'no');fb.scrollIntoView({block:'nearest',behavior:'smooth'});onDone(ok)};o.appendChild(b)})}
+function runQs(box,qs,onEach,onAll){let k=0;const nx=document.createElement('button');nx.className='btn hidden';nx.textContent='Next question';
+ const host=document.createElement('div');box.innerHTML='';box.appendChild(host);const row=document.createElement('div');row.className='row';row.style.marginTop='10px';row.appendChild(nx);box.appendChild(row);
+ function one(){nx.classList.add('hidden');const c=document.createElement('p');c.className='stage';c.textContent=`Question ${k+1} of ${qs.length}`;host.innerHTML='';host.appendChild(c);const qb=document.createElement('div');host.appendChild(qb);
+  askQ(qb,qs[k],ok=>{onEach(ok);k++;if(k<qs.length){nx.classList.remove('hidden');nx.focus({preventScroll:true})}else onAll()})}
+ nx.onclick=one;one()}
+
+let pick=new Set(),pts=0,done=false;
+function begin(){pick=new Set();pts=0;done=false;$('#start').classList.add('hidden');$('#end').classList.add('hidden');$('#play').classList.remove('hidden');$('#qb').innerHTML='';$('#fb').className='fb';$('#pol').classList.add('hidden');$('#check').classList.remove('hidden');$('#toq').classList.add('hidden');
+ const box=$('#rules');box.innerHTML='';shuffle(DATA.rules.map((x,i)=>i)).forEach(i=>{const r=DATA.rules[i],b=document.createElement('button');b.className='rule';b.dataset.i=i;b.innerHTML=`${esc(r.t)}<small class="hidden">${esc(r.why)}</small>`;
+  b.onclick=()=>{if(done)return;pick.has(i)?pick.delete(i):pick.add(i);b.classList.toggle('in',pick.has(i));b.setAttribute('aria-pressed',pick.has(i));$('#count').textContent=`In the policy: ${pick.size}`};box.appendChild(b)});$('#count').textContent='In the policy: 0';$('#pts').textContent=''}
+$('#check').onclick=()=>{done=true;let good=0,bad=0;document.querySelectorAll('.rule').forEach(b=>{const i=+b.dataset.i,r=DATA.rules[i],p=pick.has(i);b.querySelector('small').classList.remove('hidden');b.classList.add(r.good?'good':'badr');if(r.good&&p)good++;if(!r.good&&p)bad++});
+ const ng=DATA.rules.filter(r=>r.good).length;pts=Math.max(0,good*5-bad*5);$('#pts').textContent=`${pts} points`;const f=$('#fb');
+ f.querySelector('.h').textContent=`You kept ${good} of ${ng} good rules`+(bad?`, and ${bad} unsafe rule${bad>1?'s':''}.`:', and no unsafe rules.');f.querySelector('.w').textContent='Green edges are good rules; red edges are unsafe. Read why under each one.';f.className='fb show '+(good===ng&&!bad?'good':'no');
+ $('#polL').innerHTML=DATA.rules.filter(r=>r.good).map(r=>`<li>${esc(r.t)}</li>`).join('');$('#pol').classList.remove('hidden');
+ $('#check').classList.add('hidden');$('#toq').classList.remove('hidden');f.scrollIntoView({block:'nearest',behavior:'smooth'})};
+$('#toq').onclick=()=>{$('#toq').classList.add('hidden');runQs($('#qb'),DATA.qs,ok=>{if(ok)pts+=10;$('#pts').textContent=`${pts} points`},()=>{const b=document.createElement('button');b.className='btn';b.textContent='See my result';b.onclick=end;$('#qb').appendChild(b)})};
+function end(){$('#play').classList.add('hidden');$('#end').classList.remove('hidden');$('#score').textContent=`${pts} of 65 points`;
+ $('#msg').textContent=pts>=55?'A strong policy. And remember: no customer data in free AI chatbots.':'Play again. Ask of each rule: does it keep personal data safe, and does every action have a name?'}
+$('#go').onclick=begin;$('#again').onclick=begin;
+</script>
+</body></html>
