@@ -69,7 +69,7 @@ Day 3 was "Protect" on the hub but "Protect, Detect" on About and in 11.5. Day 6
 
 **F16. The note chain was broken between Day 1 and Day 2. Medium.** 11.2 had no Next link and 11.3 no Previous link; every other note links both ways. *Fixed.*
 
-**F17. Model answers in 11.14 may render as raw Markdown. Medium, needs your eye.** The four model answers sit inside `<details>` with Markdown lists and bold. GitHub Pages' kramdown leaves Markdown inside HTML blocks unparsed unless the block carries `markdown="1"`, so students may see literal `- **Point (2 + 2):**`. I could not open the live page from here, so I added `markdown="1"` to those four blocks, which is correct whichever way kramdown is configured. The Check yourself blocks elsewhere hold plain sentences and are unaffected.
+**F17. Model answers in 11.14 render as raw Markdown on the live site. Medium.** The four model answers sit inside `<details>` with Markdown lists and bold. GitHub Pages' kramdown leaves Markdown inside HTML blocks unparsed unless the block carries `markdown="1"`. A fetch of the live page (main, before this fix) confirmed it: model answer (b) comes back as one run of text, `- **Point (3):** the provider protects the cloud ...`, with the Explain and Apply items continuing on the same line instead of as separate bullets, so students see the hyphens and asterisks. *Fix:* `markdown="1"` on those four blocks. The Check yourself blocks elsewhere hold plain sentences and are unaffected.
 
 **F18. Games did not link back to their notes. Low.** The header said "Session 11.4" as plain text, so a student who opened a game from a slide QR code had no route to the notes except via the hub. *Fix:* the session label in every game header is now a link to that session's notes (two links on the ladders that span two sessions).
 
@@ -111,6 +111,6 @@ Day 3 was "Protect" on the hub but "Protect, Detect" on About and in 11.5. Day 6
 
 ## 7. For you to check
 
-1. After merging `dev`, open notes 11.14 and expand a model answer: it should show a bulleted list with bold labels (F17).
+1. After merging `dev`, open notes 11.14 and expand a model answer: it should now show a bulleted list with bold labels (F17). Before the merge it shows raw `- **Point**` text.
 2. Re-download decks 11.2, 11.4, 11.6 and 11.11 if you keep local copies; the changed text is listed in F1, F2, F3 and F15.
 3. Days 1 and 2 are already delivered. F1 widens the attacker definition students learned; a one-line mention on Day 3 ("an attacker can harm on purpose or by mistake, like the careless insider") would close the loop for them.
