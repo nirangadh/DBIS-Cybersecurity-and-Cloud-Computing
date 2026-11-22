@@ -9,7 +9,7 @@ Static site for GitHub Pages. No build step, no backend.
 | `index.html` | Course hub: links to every day's notes, games and slides |
 | `notes/` | One Markdown note per session (`11-01.md` ...). GitHub Pages turns each into a web page (`11-01.html`) |
 | `artifacts/dayN/` | One self-contained HTML game per file. Works online, offline, or from a USB stick |
-| `slides/` | Session decks (PowerPoint). Student-safe: no test questions inside |
+| `slides/` | Session decks (PowerPoint). Student-safe: no test questions and no speaker notes. Lecturer copies with notes are kept outside this repository |
 | `assets/img/` | Original flat vector illustrations (SVG) used in the notes, games and hub |
 | `assets/css/style.scss` | Colours and fonts for the notes, on top of the Primer theme |
 | `_config.yml` | GitHub Pages settings (Primer theme for the notes) |
