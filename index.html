@@ -39,7 +39,7 @@ main{padding:20px 16px 48px}
 .day .when{color:var(--muted);font-size:.9rem;margin:0 0 12px}
 .cols{display:grid;gap:14px}@media(min-width:640px){.cols{grid-template-columns:1fr 1fr}}
 .day h3{font-size:.95rem;color:var(--tanText);margin:0 0 6px}
-.day ul{margin:0;padding-left:1.1em}.day li{margin:0}.day li a{display:inline-block;padding:9px 0}
+.day ul{margin:0;padding-left:0;list-style:none}.day li{position:relative;padding-left:20px}.day li::before,.key i{content:"";position:absolute;left:2px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:2px;background:var(--tealText)}.day li.g::before,.key i.g{background:#9C7F5F;border-radius:0;clip-path:polygon(0 0,100% 50%,0 100%)}.day li.s::before,.key i.s{background:var(--navy);width:12px;height:8px;border-radius:1px}.key{display:flex;flex-wrap:wrap;gap:6px 18px;margin:-4px 0 16px;font-size:.88rem;color:var(--muted)}.key span{position:relative;padding-left:18px}.key i{left:0}.day li{margin:0}.day li a{display:inline-block;padding:5px 0}@media(max-width:640px){.day li a{padding:8px 0}}
 a{color:var(--tealText);font-weight:600}
 .soon{color:var(--muted);background:#EDE9E4;border-style:dashed}
 .soon h2{color:var(--muted)}
@@ -63,115 +63,116 @@ header .sub{color:#fff}
 <img src="assets/img/team.svg" width="400" height="232" alt="The TeaLeaf team: the IT officer, the Managing Director and a finance clerk, the fictional company used throughout the module" style="display:block;width:100%;max-width:420px;margin:0 auto 12px">
 <p class="intro">Every day has notes to read and short games to play. The games work on your phone. Your answers stay on your device. Play them again before each 3:00 test.</p>
 
+<p class="key" aria-hidden="true"><span><i></i>Notes</span><span><i class="g"></i>Games</span><span><i class="s"></i>Slides</span></p>
 <nav class="topnav" aria-label="Module pages"><a href="about.html">About this module</a><a href="coursework.html">Coursework</a><a href="practice.html">Practice questions</a><a href="glossary.html">Glossary</a></nav>
 <section class="day"><h2>Day 1: Why it matters</h2><p class="when">Govern and Identify. Test 1 at 3:00.</p>
 <div class="cols">
 <div><h3>Morning: Why security matters to a business</h3><ul>
-<li><a href="notes/11-01.html">Notes 11.1</a></li>
-<li><a href="artifacts/day1/a1-1-cia-triage.html">A1.1 CIA Triage</a></li>
-<li><a href="artifacts/day1/a1-3-what-is-tealeaf-worth.html">A1.3 What Is TeaLeaf Worth?</a></li>
-<li><a href="artifacts/day1/a1-2-risk-word-sorter.html">A1.2 Risk Word Sorter</a></li>
-<li><a href="artifacts/day1/a1-7-risk-builder.html">A1.7 Risk Builder</a></li>
-<li><a href="artifacts/day1/a1-6-risk-words-ladder.html">A1.6 Risk Words Ladder</a></li>
-<li><a href="slides/11-01-why-security-matters.pptx">Slides 11.1 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-01.html">Notes 11.1</a></li>
+<li class="g"><a href="artifacts/day1/a1-1-cia-triage.html">A1.1 CIA Triage</a></li>
+<li class="g"><a href="artifacts/day1/a1-3-what-is-tealeaf-worth.html">A1.3 What Is TeaLeaf Worth?</a></li>
+<li class="g"><a href="artifacts/day1/a1-2-risk-word-sorter.html">A1.2 Risk Word Sorter</a></li>
+<li class="g"><a href="artifacts/day1/a1-7-risk-builder.html">A1.7 Risk Builder</a></li>
+<li class="g"><a href="artifacts/day1/a1-6-risk-words-ladder.html">A1.6 Risk Words Ladder</a></li>
+<li class="s"><a href="slides/11-01-why-security-matters.pptx">Slides 11.1 (PowerPoint)</a></li></ul></div>
 <div><h3>Afternoon: Who attacks and how</h3><ul>
-<li><a href="notes/11-02.html">Notes 11.2</a></li>
-<li><a href="artifacts/day1/a1-8-attack-lab.html">A1.8 Attack Lab</a></li>
-<li><a href="artifacts/day1/a1-4-attacker-profiler.html">A1.4 Attacker Profiler</a></li>
-<li><a href="artifacts/day1/a1-5-malware-line-up.html">A1.5 Malware Line-up</a></li>
-<li><a href="artifacts/day1/a1-9-attack-words-ladder.html">A1.9 Attack Words Ladder</a></li>
-<li><a href="slides/11-02-who-attacks-and-how.pptx">Slides 11.2 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-02.html">Notes 11.2</a></li>
+<li class="g"><a href="artifacts/day1/a1-8-attack-lab.html">A1.8 Attack Lab</a></li>
+<li class="g"><a href="artifacts/day1/a1-4-attacker-profiler.html">A1.4 Attacker Profiler</a></li>
+<li class="g"><a href="artifacts/day1/a1-5-malware-line-up.html">A1.5 Malware Line-up</a></li>
+<li class="g"><a href="artifacts/day1/a1-9-attack-words-ladder.html">A1.9 Attack Words Ladder</a></li>
+<li class="s"><a href="slides/11-02-who-attacks-and-how.pptx">Slides 11.2 (PowerPoint)</a></li></ul></div>
 </div></section>
 
 <section class="day"><h2>Day 2: People and passwords</h2><p class="when">Protect. Test 2 at 3:00.</p>
 <div class="cols">
 <div><h3>Morning: Tricks that target people</h3><ul>
-<li><a href="notes/11-03.html">Notes 11.3</a></li>
-<li><a href="artifacts/day2/a2-1-phish-or-legit.html">A2.1 Phish or Legit</a></li>
-<li><a href="artifacts/day2/a2-2-pressure-tricks.html">A2.2 Pressure Tricks</a></li>
-<li><a href="artifacts/day2/a2-3-bank-change-trap.html">A2.3 The Bank Change Trap</a></li>
-<li><a href="slides/11-03-tricks-that-target-people.pptx">Slides 11.3 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-03.html">Notes 11.3</a></li>
+<li class="g"><a href="artifacts/day2/a2-1-phish-or-legit.html">A2.1 Phish or Legit</a></li>
+<li class="g"><a href="artifacts/day2/a2-2-pressure-tricks.html">A2.2 Pressure Tricks</a></li>
+<li class="g"><a href="artifacts/day2/a2-3-bank-change-trap.html">A2.3 The Bank Change Trap</a></li>
+<li class="s"><a href="slides/11-03-tricks-that-target-people.pptx">Slides 11.3 (PowerPoint)</a></li></ul></div>
 <div><h3>Afternoon: Proving who you are</h3><ul>
-<li><a href="notes/11-04.html">Notes 11.4</a></li>
-<li><a href="artifacts/day2/a2-7-door-or-diary.html">A2.7 Door or Diary?</a></li>
-<li><a href="artifacts/day2/a1-1-plus-extended-cia-triage.html">A1.1+ Extended CIA Triage</a></li>
-<li><a href="artifacts/day2/a2-4-password-lab-mfa-gauntlet.html">A2.4 Password Lab and MFA Gauntlet</a></li>
-<li><a href="artifacts/day2/a2-5-access-office.html">A2.5 Access Office</a></li>
-<li><a href="artifacts/day2/a2-6-people-words-ladder.html">A2.6 People Words Ladder</a></li>
-<li><a href="slides/11-04-proving-who-you-are.pptx">Slides 11.4 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-04.html">Notes 11.4</a></li>
+<li class="g"><a href="artifacts/day2/a2-7-door-or-diary.html">A2.7 Door or Diary?</a></li>
+<li class="g"><a href="artifacts/day2/a1-1-plus-extended-cia-triage.html">A1.1+ Extended CIA Triage</a></li>
+<li class="g"><a href="artifacts/day2/a2-4-password-lab-mfa-gauntlet.html">A2.4 Password Lab and MFA Gauntlet</a></li>
+<li class="g"><a href="artifacts/day2/a2-5-access-office.html">A2.5 Access Office</a></li>
+<li class="g"><a href="artifacts/day2/a2-6-people-words-ladder.html">A2.6 People Words Ladder</a></li>
+<li class="s"><a href="slides/11-04-proving-who-you-are.pptx">Slides 11.4 (PowerPoint)</a></li></ul></div>
 </div></section>
 <section class="day"><h2>Day 3: Protecting data</h2><p class="when">Protect and Detect. Test 3 at 3:00.</p>
 <div class="cols">
 <div><h3>Morning: How data travels</h3><ul>
-<li><a href="notes/11-05.html">Notes 11.5</a></li>
-<li><a href="artifacts/day3/a3-1-packet-journey.html">A3.1 Packet Journey</a></li>
-<li><a href="artifacts/day3/a3-3-coffee-shop-snooper.html">A3.3 Coffee Shop Snooper</a></li>
-<li><a href="artifacts/day3/a3-2-castle-defence.html">A3.2 Castle Defence</a></li>
-<li><a href="slides/11-05-how-data-travels.pptx">Slides 11.5 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-05.html">Notes 11.5</a></li>
+<li class="g"><a href="artifacts/day3/a3-1-packet-journey.html">A3.1 Packet Journey</a></li>
+<li class="g"><a href="artifacts/day3/a3-3-coffee-shop-snooper.html">A3.3 Coffee Shop Snooper</a></li>
+<li class="g"><a href="artifacts/day3/a3-2-castle-defence.html">A3.2 Castle Defence</a></li>
+<li class="s"><a href="slides/11-05-how-data-travels.pptx">Slides 11.5 (PowerPoint)</a></li></ul></div>
 <div><h3>Afternoon: Keeping secrets with keys</h3><ul>
-<li><a href="notes/11-06.html">Notes 11.6</a></li>
-<li><a href="artifacts/day3/a3-4-the-key-box.html">A3.4 The Key Box</a></li>
-<li><a href="artifacts/day3/a3-5-hash-fingerprint.html">A3.5 Hash Fingerprint</a></li>
-<li><a href="artifacts/day3/a3-6-data-words-ladder.html">A3.6 Data Words Ladder</a></li>
-<li><a href="slides/11-06-keeping-secrets-with-keys.pptx">Slides 11.6 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-06.html">Notes 11.6</a></li>
+<li class="g"><a href="artifacts/day3/a3-4-the-key-box.html">A3.4 The Key Box</a></li>
+<li class="g"><a href="artifacts/day3/a3-5-hash-fingerprint.html">A3.5 Hash Fingerprint</a></li>
+<li class="g"><a href="artifacts/day3/a3-6-data-words-ladder.html">A3.6 Data Words Ladder</a></li>
+<li class="s"><a href="slides/11-06-keeping-secrets-with-keys.pptx">Slides 11.6 (PowerPoint)</a></li></ul></div>
 </div></section>
 <section class="day"><h2>Day 4: The cloud</h2><p class="when">Identify and Govern. Test 4 at 3:00.</p>
 <div class="cols">
 <div><h3>Morning: What the cloud is</h3><ul>
-<li><a href="notes/11-07.html">Notes 11.7</a></li>
-<li><a href="artifacts/day4/a4-1-is-it-cloud.html">A4.1 Is It Cloud?</a></li>
-<li><a href="artifacts/day4/a4-2-pizza-as-a-service.html">A4.2 Pizza-as-a-Service</a></li>
-<li><a href="artifacts/day4/a4-3-deployment-matchmaker.html">A4.3 Deployment Matchmaker</a></li>
-<li><a href="slides/11-07-what-the-cloud-is.pptx">Slides 11.7 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-07.html">Notes 11.7</a></li>
+<li class="g"><a href="artifacts/day4/a4-1-is-it-cloud.html">A4.1 Is It Cloud?</a></li>
+<li class="g"><a href="artifacts/day4/a4-2-pizza-as-a-service.html">A4.2 Pizza-as-a-Service</a></li>
+<li class="g"><a href="artifacts/day4/a4-3-deployment-matchmaker.html">A4.3 Deployment Matchmaker</a></li>
+<li class="s"><a href="slides/11-07-what-the-cloud-is.pptx">Slides 11.7 (PowerPoint)</a></li></ul></div>
 <div><h3>Afternoon: Buy or rent?</h3><ul>
-<li><a href="notes/11-08.html">Notes 11.8</a></li>
-<li><a href="artifacts/day4/a4-4-stack-it.html">A4.4 Stack It</a></li>
-<li><a href="artifacts/day4/a4-5-server-or-cloud.html">A4.5 Server or Cloud?</a></li>
-<li><a href="artifacts/day4/a4-6-cloud-words-ladder.html">A4.6 Cloud Words Ladder</a></li>
-<li><a href="slides/11-08-buy-or-rent.pptx">Slides 11.8 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-08.html">Notes 11.8</a></li>
+<li class="g"><a href="artifacts/day4/a4-4-stack-it.html">A4.4 Stack It</a></li>
+<li class="g"><a href="artifacts/day4/a4-5-server-or-cloud.html">A4.5 Server or Cloud?</a></li>
+<li class="g"><a href="artifacts/day4/a4-6-cloud-words-ladder.html">A4.6 Cloud Words Ladder</a></li>
+<li class="s"><a href="slides/11-08-buy-or-rent.pptx">Slides 11.8 (PowerPoint)</a></li></ul></div>
 </div></section>
 <section class="day"><h2>Day 5: Responsibility and the law</h2><p class="when">Govern and Protect. Test 5 at 3:00.</p>
 <div class="cols">
 <div><h3>Morning: Whose job is it?</h3><ul>
-<li><a href="notes/11-09.html">Notes 11.9</a></li>
-<li><a href="artifacts/day5/a5-1-whose-job-is-it.html">A5.1 Whose Job Is It?</a></li>
-<li><a href="artifacts/day5/a5-2-misconfiguration-hunt.html">A5.2 Misconfiguration Hunt</a></li>
-<li><a href="artifacts/day5/a5-3-provider-scorecard.html">A5.3 Provider Scorecard</a></li>
-<li><a href="slides/11-09-whose-job-is-it.pptx">Slides 11.9 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-09.html">Notes 11.9</a></li>
+<li class="g"><a href="artifacts/day5/a5-1-whose-job-is-it.html">A5.1 Whose Job Is It?</a></li>
+<li class="g"><a href="artifacts/day5/a5-2-misconfiguration-hunt.html">A5.2 Misconfiguration Hunt</a></li>
+<li class="g"><a href="artifacts/day5/a5-3-provider-scorecard.html">A5.3 Provider Scorecard</a></li>
+<li class="s"><a href="slides/11-09-whose-job-is-it.pptx">Slides 11.9 (PowerPoint)</a></li></ul></div>
 <div><h3>Afternoon: Personal data and the law</h3><ul>
-<li><a href="notes/11-10.html">Notes 11.10</a></li>
-<li><a href="artifacts/day5/a5-4-rights-rumble.html">A5.4 Rights Rumble</a></li>
-<li><a href="artifacts/day5/a5-5-policy-builder.html">A5.5 Policy Builder</a></li>
-<li><a href="artifacts/day5/a5-6-law-words-ladder.html">A5.6 Law Words Ladder</a></li>
-<li><a href="slides/11-10-personal-data-and-the-law.pptx">Slides 11.10 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-10.html">Notes 11.10</a></li>
+<li class="g"><a href="artifacts/day5/a5-4-rights-rumble.html">A5.4 Rights Rumble</a></li>
+<li class="g"><a href="artifacts/day5/a5-5-policy-builder.html">A5.5 Policy Builder</a></li>
+<li class="g"><a href="artifacts/day5/a5-6-law-words-ladder.html">A5.6 Law Words Ladder</a></li>
+<li class="s"><a href="slides/11-10-personal-data-and-the-law.pptx">Slides 11.10 (PowerPoint)</a></li></ul></div>
 </div></section>
 <section class="day"><h2>Day 6: When things go wrong</h2><p class="when">Identify, Govern, Detect, Respond, Recover. Test 6 at 3:00.</p>
 <div class="cols">
 <div><h3>Morning: Managing risk</h3><ul>
-<li><a href="notes/11-11.html">Notes 11.11</a></li>
-<li><a href="artifacts/day6/a6-1-risk-matrix-plotter.html">A6.1 Risk Matrix Plotter</a></li>
-<li><a href="artifacts/day6/a6-2-treat-it.html">A6.2 Treat It!</a></li>
-<li><a href="artifacts/day6/a6-3-prevent-detect-or-fix.html">A6.3 Prevent, Detect or Fix?</a></li>
-<li><a href="slides/11-11-managing-risk.pptx">Slides 11.11 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-11.html">Notes 11.11</a></li>
+<li class="g"><a href="artifacts/day6/a6-1-risk-matrix-plotter.html">A6.1 Risk Matrix Plotter</a></li>
+<li class="g"><a href="artifacts/day6/a6-2-treat-it.html">A6.2 Treat It!</a></li>
+<li class="g"><a href="artifacts/day6/a6-3-prevent-detect-or-fix.html">A6.3 Prevent, Detect or Fix?</a></li>
+<li class="s"><a href="slides/11-11-managing-risk.pptx">Slides 11.11 (PowerPoint)</a></li></ul></div>
 <div><h3>Afternoon: When things go wrong</h3><ul>
-<li><a href="notes/11-12.html">Notes 11.12</a></li>
-<li><a href="artifacts/day6/a6-4-ransomware-tabletop.html">A6.4 Ransomware Tabletop</a></li>
-<li><a href="artifacts/day6/a6-5-recovery-clock.html">A6.5 Recovery Clock</a></li>
-<li><a href="artifacts/day6/a6-6-response-words-ladder.html">A6.6 Response Words Ladder</a></li>
-<li><a href="slides/11-12-when-things-go-wrong.pptx">Slides 11.12 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-12.html">Notes 11.12</a></li>
+<li class="g"><a href="artifacts/day6/a6-4-ransomware-tabletop.html">A6.4 Ransomware Tabletop</a></li>
+<li class="g"><a href="artifacts/day6/a6-5-recovery-clock.html">A6.5 Recovery Clock</a></li>
+<li class="g"><a href="artifacts/day6/a6-6-response-words-ladder.html">A6.6 Response Words Ladder</a></li>
+<li class="s"><a href="slides/11-12-when-things-go-wrong.pptx">Slides 11.12 (PowerPoint)</a></li></ul></div>
 </div></section>
 <section class="day"><h2>Day 7: Exam preparation</h2><p class="when">The whole week. No test.</p>
 <div class="cols">
 <div><h3>Morning: The week on one page</h3><ul>
-<li><a href="notes/11-13.html">Notes 11.13</a></li>
-<li><a href="artifacts/day7/a7-2-tealeaf-health-check.html">A7.2 TeaLeaf Health Check</a></li>
-<li><a href="artifacts/day7/a7-3-revision-arena.html">A7.3 Revision Arena</a></li>
-<li><a href="artifacts/day7/a7-1-command-word-decoder.html">A7.1 Command Word Decoder</a></li>
-<li><a href="slides/11-13-the-week-on-one-page.pptx">Slides 11.13 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-13.html">Notes 11.13</a></li>
+<li class="g"><a href="artifacts/day7/a7-2-tealeaf-health-check.html">A7.2 TeaLeaf Health Check</a></li>
+<li class="g"><a href="artifacts/day7/a7-3-revision-arena.html">A7.3 Revision Arena</a></li>
+<li class="g"><a href="artifacts/day7/a7-1-command-word-decoder.html">A7.1 Command Word Decoder</a></li>
+<li class="s"><a href="slides/11-13-the-week-on-one-page.pptx">Slides 11.13 (PowerPoint)</a></li></ul></div>
 <div><h3>Afternoon: The exam</h3><ul>
-<li><a href="notes/11-14.html">Notes 11.14</a></li>
-<li><a href="artifacts/day7/a7-4-answer-builder.html">A7.4 Answer Builder</a></li>
-<li><a href="slides/11-14-the-exam.pptx">Slides 11.14 (PowerPoint)</a></li></ul></div>
+<li class="n"><a href="notes/11-14.html">Notes 11.14</a></li>
+<li class="g"><a href="artifacts/day7/a7-4-answer-builder.html">A7.4 Answer Builder</a></li>
+<li class="s"><a href="slides/11-14-the-exam.pptx">Slides 11.14 (PowerPoint)</a></li></ul></div>
 </div></section>
 <footer>DBIS-11 Cybersecurity and Cloud Computing. Module lecturer: Niranga Dharmaratna, <a href="mailto:niranga@nibm.lk">niranga@nibm.lk</a>.<br>&copy; 2026 Niranga Dharmaratna, School of Computing &amp; Engineering, National Institute of Business Management. Content licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, code licensed MIT. <a href="LICENSE.html">Licence details</a>.</footer>
 </main></body></html>
