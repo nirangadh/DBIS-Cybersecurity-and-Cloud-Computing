@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4.5 Server or Cloud? | DBIS-11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#262A20;--teal:#667C7E;--tealText:#566A6C;--orange:#C7A887;--tanText:#7D5F3F;--ink:#262A20;--muted:#5A5F55;
+--tealT:#E1E6E6;--navyT:#D9D5D2;--orangeT:#EDDDCD;--line:#D9D5D2;--ok:#3F6B4A;--bad:#9A3B2E;--okT:#E7EFE8;--badT:#F6E7E3;--bg:#F4F2EF;--edge:#8F8A84}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Open Sans","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:17px}
+a{color:var(--tealText)}
+.top{background:var(--navy);color:#fff;padding:14px 20px}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.leaf{width:40px;height:40px;border-radius:50%;background:var(--teal);display:grid;place-items:center;flex:none}
+.leaf svg{width:22px;height:22px;fill:#fff}
+.top h1{font-size:1.25rem;margin:0;line-height:1.2}
+.top p{margin:2px 0 0;font-size:.85rem;color:var(--navyT)}
+.top a{color:var(--orangeT);font-size:.85rem;margin-left:auto;white-space:nowrap}
+.bars{display:flex;gap:5px;margin:8px 0 0}.bars i{height:5px;border-radius:2px;display:block}
+.bars i:first-child{width:46px;background:var(--teal)}.bars i:last-child{width:22px;background:var(--orange)}
+.wrap{max-width:760px;margin:0 auto}
+main{padding:18px 16px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 0 rgba(28,54,120,.06)}
+.card+.card{margin-top:14px}
+h2{color:var(--navy);font-size:1.3rem;margin:0 0 8px}
+.steps{padding-left:1.3em;margin:8px 0 16px}.steps li{margin:4px 0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--navy);color:#fff;min-height:48px}
+.btn.alt{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn:focus-visible,.opt:focus-visible,.mv:focus-visible,.chip:focus-visible,.tab:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.meta{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.timer{height:10px;background:#E5E7EB;border-radius:6px;overflow:hidden;margin-bottom:14px}
+.timer b{display:block;height:100%;width:100%;background:var(--teal);transition:width .2s linear}
+.timer b.low{background:var(--orange)}
+.q{font-size:1.25rem;font-weight:600;color:var(--ink);margin:4px 0 16px;min-height:3.2em}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center;min-height:56px}
+.opt .k{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.opt strong{display:block;color:var(--navy)}
+.opt small{color:var(--muted);font-size:.85rem}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--okT)}
+.opt.wrong{border-color:var(--bad);background:var(--badT)}
+.fb{margin-top:14px;border-radius:12px;padding:14px;display:none}
+.fb.show{display:block}.fb.good{background:var(--okT)}.fb.no{background:var(--badT)}
+.fb p{margin:4px 0}
+.fb .h{font-weight:800}.fb.good .h{color:var(--ok)}.fb.no .h{color:var(--bad)}
+.help{margin-top:14px}
+.help summary{cursor:pointer;font-weight:700;color:var(--tealText)}
+.help dl{margin:8px 0 0}.help dt{font-weight:700;color:var(--navy)}.help dd{margin:0 0 8px}
+.big{font-size:2.6rem;font-weight:800;color:var(--navy);margin:0}
+.review{margin:12px 0 0;padding:0;list-style:none}
+.review li{border-top:1px solid var(--line);padding:10px 0}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;border-radius:20px;padding:2px 10px;background:var(--tealT);color:var(--tealText)}
+.streak{color:var(--tanText);font-weight:700}
+.rank{list-style:none;margin:0;padding:0;counter-reset:r}
+.rank li{display:flex;align-items:center;gap:10px;border:2px solid var(--edge);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.rank .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800}
+.rank .t{flex:1}.rank .t small{display:block;color:var(--muted)}
+.mv{font:inherit;width:44px;height:44px;border-radius:10px;border:2px solid var(--edge);background:#fff;cursor:pointer;font-size:1.1rem}
+.mv[disabled]{opacity:.35;cursor:default}
+table.cmp{width:100%;border-collapse:collapse;font-size:.92rem}
+table.cmp th{background:var(--navy);color:#fff;text-align:left;padding:8px}
+table.cmp td{border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+.clue{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;margin-bottom:14px}
+.two{display:grid;gap:14px}
+@media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
+.lab{font-weight:800;color:var(--navy);margin:0 0 6px}
+.hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:20px}
+.study{display:grid;gap:10px;margin:10px 0 16px}
+.word{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.word b{color:var(--navy);font-size:1.05rem}.word p{margin:2px 0 0;font-size:.92rem}.word em{color:var(--muted);font-size:.88rem}
+.hear{font:inherit;font-size:.8rem;font-weight:700;border:1.5px solid var(--edge);background:#fff;border-radius:16px;padding:2px 10px;cursor:pointer;margin-left:8px;color:var(--tealText)}
+.mode{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.mode label{border:2px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer}
+.mode input{margin-right:6px}
+.lvl{display:inline-block;background:var(--orangeT);color:var(--tanText);font-weight:800;border-radius:8px;padding:2px 10px;font-size:.85rem;margin-bottom:6px}
+.frame{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;line-height:1.6;margin:10px 0;position:sticky;top:6px;z-index:5;box-shadow:0 2px 8px rgba(38,42,32,.15)}
+.slot{display:inline-block;border-bottom:3px solid var(--edge);min-width:6em;padding:0 4px;font-weight:700}
+.slot.t{border-color:var(--tanText);color:var(--tanText)}.slot.v{border-color:var(--navy);color:var(--navy)}.slot.h{border-color:var(--tealText);color:var(--tealText)}
+.cols3{display:grid;gap:14px}@media(min-width:700px){.cols3{grid-template-columns:repeat(3,1fr)}}
+.chips{display:grid;gap:8px}
+.chip{font:inherit;font-size:.95rem;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:10px;padding:10px 12px;cursor:pointer;min-height:48px}
+.chip[aria-pressed="true"]{background:var(--orangeT);border-color:var(--navy);font-weight:700}
+.reg{list-style:none;padding:0;margin:10px 0 0}
+.reg li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.reg li.fixed .s{text-decoration:line-through;color:var(--muted)}
+.reg .fixnote{display:none;margin:6px 0 0;color:var(--ok);font-weight:600}.reg li.fixed .fixnote{display:block}
+.goal{font-weight:800;color:var(--tanText)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tab{font:inherit;font-size:.9rem;font-weight:700;border:2px solid var(--edge);background:#fff;border-radius:18px;padding:6px 12px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab.done::after{content:" \2713";color:var(--ok)}.tab[aria-selected="true"].done::after{color:#BFD8C4}
+svg.net{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+.net text{font-family:inherit;font-size:12px;fill:var(--ink)}
+.net .lbl{font-weight:700}
+.net .link{stroke:#B8B3AD;stroke-width:1.5}
+.net .box{fill:#fff;stroke:var(--edge);stroke-width:1.5;transition:fill .3s}
+.net .inf .box{fill:var(--orange);stroke:var(--tanText)}
+.net .lock .box{fill:var(--navy);stroke:var(--navy)}.net .lock text.in{fill:#fff}
+.net .spy .box{stroke:var(--tanText);stroke-dasharray:4 3;stroke-width:2.5}
+.net .busy .box{fill:var(--badT);stroke:var(--bad)}
+.net .fade{opacity:.25;transition:opacity .4s}.net .show{opacity:1}
+.net .door{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4;opacity:0;transition:opacity .5s}
+.narr{background:var(--navyT);border-radius:12px;padding:12px 14px;margin:12px 0;min-height:3.2em;font-weight:600}
+.hero{display:flex;justify-content:center;margin:-6px 0 8px}.hero svg{width:100%;max-width:320px;height:auto}
+.pic{display:flex;justify-content:center;margin:8px 0}.pic svg{width:100%;max-width:240px;height:auto}
+.mail{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.mail .hd{background:var(--navyT);padding:10px 12px;font-size:.92rem}.mail .hd b{color:var(--navy)}
+.mail .bd{padding:12px;font-size:1rem;line-height:1.55}
+.mail .kind{display:inline-block;font-size:.75rem;font-weight:800;background:var(--orangeT);color:var(--tanText);border-radius:6px;padding:1px 8px;margin-bottom:4px}
+.flag{cursor:pointer;border-bottom:2px dotted transparent;border-radius:3px}
+.flag.found{background:var(--badT);border-bottom-color:var(--bad)}
+.flag.shown{background:var(--badT)}
+.flaglist{margin:8px 0 0;padding-left:1.2em}.flaglist li{margin:4px 0}
+.story{font-size:1.08rem}.story .scene{background:var(--navyT);border-radius:12px;padding:14px;margin-bottom:12px}
+.path{font-size:.9rem;color:var(--muted)}
+.meter{height:14px;border-radius:8px;background:#E5E1DC;overflow:hidden;margin:8px 0}.meter b{display:block;height:100%;width:0;transition:width .3s}
+.pw{font:inherit;font-size:1.15rem;width:100%;padding:12px;border:2px solid var(--edge);border-radius:10px}
+.pw:focus{outline:3px solid var(--navy);outline-offset:1px}
+.grid{border-collapse:collapse;width:100%;font-size:.9rem}.grid th,.grid td{border:1px solid var(--line);padding:6px;text-align:center}.grid th{background:var(--navy);color:#fff}.grid td:first-child{text-align:left;font-weight:700}
+.grid input{width:22px;height:22px}
+.grid th:first-child,.grid td:first-child{position:sticky;left:0;z-index:1;background:#fff;min-width:92px}.grid th:first-child{background:var(--navy)}
+.grid td.miss{background:var(--badT)}.grid td.hit{background:var(--okT)}
+.log{font-family:Consolas,Menlo,monospace;font-size:.88rem;background:#262A20;color:#EDDDCD;border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.stage{font-weight:800;color:var(--navy);margin:0 0 6px}
+.qbox{margin-top:12px}
+.story{background:var(--orangeT);border-radius:12px;padding:10px 12px;margin:0 0 10px}
+.story b{color:var(--navy)}
+.stack{display:grid;gap:6px;margin:8px 0}
+.lyr{display:grid;grid-template-columns:1fr 130px;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.lyr .nm{font-weight:700}.lyr .nm small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.who{font:inherit;font-weight:800;border-radius:18px;border:2px solid var(--edge);padding:8px 6px;background:var(--navyT);cursor:pointer;min-height:44px}
+.who.you{background:#7D5F3F;color:#fff;border-color:#7D5F3F}.who.pro{background:#667C7E;color:#fff;border-color:#667C7E}
+.lyr.ok{border:2px solid var(--ok)}.lyr.bad{border:2px solid var(--bad)}
+.meters{display:grid;gap:8px;margin:8px 0 12px}
+.cap{font-size:.9rem;font-weight:700}.cap .tr{height:18px;border-radius:9px;background:var(--navyT);overflow:hidden;margin-top:3px}
+.cap .tr b{display:block;height:100%;background:#667C7E;transition:width .25s}.cap .tr b.full{background:#9A3B2E}
+.vms{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(min-width:560px){.vms{grid-template-columns:1fr 1fr 1fr}}
+.vm{font:inherit;text-align:left;border:2px solid var(--edge);border-radius:12px;padding:8px 10px;background:#fff;cursor:pointer;min-height:56px}
+.vm b{display:block}.vm small{color:var(--muted)}.vm.on{background:var(--navy);color:#fff;border-color:var(--navy)}.vm.on small{color:#EDDDCD}
+.vm.need{box-shadow:inset 0 0 0 2px #C7A887}.vm.shake{animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.ctl{margin:8px 0 12px}.ctl label{font-weight:700;display:block}.ctl input[type=range]{width:100%;accent-color:#667C7E}
+.tog{display:flex;gap:10px;align-items:flex-start;margin:6px 0;font-weight:600}.tog input{width:22px;height:22px;accent-color:#7D5F3F;flex:none;margin-top:1px}
+.costs{display:grid;gap:12px}@media(min-width:600px){.costs{grid-template-columns:1fr 1fr}}
+.cost{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.cost h3{margin:0 0 6px;font-size:1rem;color:var(--navy)}.cost .n{font-size:1.35rem;font-weight:800}
+.cost .bar{height:14px;border-radius:7px;background:var(--navyT);margin:6px 0 2px;overflow:hidden}.cost .bar b{display:block;height:100%}
+.cost.win{border:2px solid var(--ok)}
+.small{font-size:.85rem;color:var(--muted)}
+</style></head>
+<body>
+<header class="top"><div class="wrap"><div class="leaf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.2 3.8 21.3l1.9.7 1-2.3c.5.2 1 .3 1.3.3C19 20 22 3 22 3c-1 2-8 2.3-13 3.3S2 11.5 2 13.5c0 2 1.8 3.8 1.8 3.8C7 8 17 8 17 8z"/></svg></div>
+<div><h1>Server or Cloud?</h1><p>A4.5  |  Day 4  |  Session 11.8</p><div class="bars"><i></i><i></i></div></div>
+<a href="../../index.html">Course site</a></div></header>
+<main class="wrap"><section class="card" id="start"><div class="hero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 248" role="img" aria-label="Sachini carries a stack of order boxes. A chart shows orders are steady all year, then triple in December."><title>Sachini carries a stack of order boxes. A chart shows orders are steady all year, then triple in December.</title><ellipse cx="160" cy="236" rx="150" ry="11" fill="#D9D5D2"/><ellipse cx="160" cy="134" rx="155" ry="104" fill="#EDDDCD"/><g transform="translate(8 30) scale(1.0)"><path d="M41 24 C36 48 38 64 46 70 L74 70 C82 64 84 48 79 24 Z" fill="#1F1B17"/><rect x="45" y="160" width="10" height="34" fill="#6E4128"/><rect x="65" y="160" width="10" height="34" fill="#6E4128"/><path d="M37 116 L83 116 L90 166 L30 166 Z" fill="#262A20"/><ellipse cx="49" cy="197" rx="11" ry="5" fill="#262A20"/><ellipse cx="71" cy="197" rx="11" ry="5" fill="#262A20"/><rect x="53" y="42" width="14" height="20" fill="#6E4128"/><path d="M53 50 Q60 56 67 50 L67 56 Q60 60 53 56 Z" fill="#583420"/><path d="M36 72 Q36 59 48 57 L72 57 Q84 59 84 72 L83 122 Q60 127 37 122 Z" fill="#9C7F5F"/><path d="M52 57 L60 88 L68 57 Z" fill="#EDDDCD"/><path d="M50 57 L60 92 L56 70 L46 60 Z M70 57 L60 92 L64 70 L74 60 Z" fill="#79634A"/><circle cx="60" cy="100" r="1.6" fill="#5D4C39"/><path d="M38 66 L35 92" stroke="#9C7F5F" stroke-width="12" stroke-linecap="round"/><path d="M35 92 L42 104" stroke="#9C7F5F" stroke-width="11" stroke-linecap="round"/><path d="M35 92 L42 104" stroke="#8C7255" stroke-width="2" stroke-linecap="round" opacity=".5"/><path d="M82 66 L85 92" stroke="#9C7F5F" stroke-width="12" stroke-linecap="round"/><path d="M85 92 L78 104" stroke="#9C7F5F" stroke-width="11" stroke-linecap="round"/><path d="M85 92 L78 104" stroke="#8C7255" stroke-width="2" stroke-linecap="round" opacity=".5"/><rect x="34" y="90" width="52" height="40" rx="2" fill="#C7A887"/><path d="M34 90 L42 82 L94 82 L86 90 Z" fill="#A98E72"/><path d="M34 104 L86 104" stroke="#9C7F5F" stroke-width="1.5"/><rect x="46" y="92" width="10" height="7" fill="#FFFFFF"/><circle cx="42" cy="107" r="5.8" fill="#6E4128"/><path d="M38 109 Q42 112 46 109" stroke="#583420" stroke-width="1" fill="none"/><circle cx="78" cy="107" r="5.8" fill="#6E4128"/><path d="M74 109 Q78 112 82 109" stroke="#583420" stroke-width="1" fill="none"/><ellipse cx="43" cy="32" rx="3.2" ry="5" fill="#583420"/><ellipse cx="77" cy="32" rx="3.2" ry="5" fill="#583420"/><ellipse cx="60" cy="30" rx="17" ry="19" fill="#6E4128"/><path d="M42.5 30 C40 11 52 7 60 7 C70 7 81 11 77.5 30 C76 20 70 16 60 16 C51 16 45 20 42.5 30 Z" fill="#1F1B17"/><path d="M60 9 C52 9 44 14 43 26 C50 22 55 17 60 14 Z" fill="#1F1B17"/><ellipse cx="53.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><ellipse cx="66.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><path d="M50 26 L56 25.3 M64 25.3 L70 26" stroke="#1F1B17" stroke-width="1.8" stroke-linecap="round"/><path d="M60 31 Q62.8 37 59.4 37.6" stroke="#583420" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M54 41 Q60 46.5 66 41" stroke="#262A20" stroke-width="1.6" fill="#FFFFFF" stroke-linecap="round"/></g><rect x="140" y="178" width="10" height="22" rx="2" fill="#667C7E"/><text x="145" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">J</text><rect x="153" y="174" width="10" height="26" rx="2" fill="#667C7E"/><text x="158" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">F</text><rect x="166" y="170" width="10" height="30" rx="2" fill="#667C7E"/><text x="171" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">M</text><rect x="179" y="178" width="10" height="22" rx="2" fill="#667C7E"/><text x="184" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">A</text><rect x="192" y="174" width="10" height="26" rx="2" fill="#667C7E"/><text x="197" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">M</text><rect x="205" y="170" width="10" height="30" rx="2" fill="#667C7E"/><text x="210" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">J</text><rect x="218" y="178" width="10" height="22" rx="2" fill="#667C7E"/><text x="223" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">J</text><rect x="231" y="174" width="10" height="26" rx="2" fill="#667C7E"/><text x="236" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">A</text><rect x="244" y="170" width="10" height="30" rx="2" fill="#667C7E"/><text x="249" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">S</text><rect x="257" y="178" width="10" height="22" rx="2" fill="#667C7E"/><text x="262" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">O</text><rect x="270" y="174" width="10" height="26" rx="2" fill="#667C7E"/><text x="275" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">N</text><rect x="283" y="108" width="10" height="92" rx="2" fill="#9C7F5F"/><text x="288" y="214" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="8" font-weight="700" fill="#4E5F61" text-anchor="middle">D</text><line x1="136" y1="200" x2="298" y2="200" stroke="#262A20" stroke-width="2"/><text x="222" y="96" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="11" font-weight="800" fill="#9C7F5F" text-anchor="middle">December:</text><text x="222" y="110" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="11" font-weight="800" fill="#9C7F5F" text-anchor="middle">three times more</text></svg></div><h2>How to play</h2><ol class="steps"><li>TeaLeaf must choose: <strong>buy a server</strong> or <strong>rent cloud</strong>, for 3 years.</li><li>Move the December slider. Tick any hidden costs. Watch the totals.</li><li>Then answer five questions. Use the calculator to find the answers.</li></ol>
+<p>These are sample LKR figures for practice, not real prices.</p><button class="btn" id="go">Start</button></section>
+<section class="card hidden" id="play">
+<div class="ctl"><label for="peak">December orders: <span id="pv"></span> normal</label><input type="range" id="peak" min="1" max="4" step="1" value="3"></div>
+<div id="hid"></div>
+<div class="costs">
+<div class="cost" id="cs"><h3>Buy a server</h3><p class="small">Big enough for December, all year</p><p class="n" id="sTot"></p><div class="bar"><b id="sBar" style="background:#262A20"></b></div><p class="small" id="sNow"></p></div>
+<div class="cost" id="cc"><h3>Rent cloud</h3><p class="small">Grows in December, shrinks in January</p><p class="n" id="cTot"></p><div class="bar"><b id="cBar" style="background:#667C7E"></b></div><p class="small" id="cNow"></p></div>
+</div>
+<p class="small" id="why" style="margin-top:8px"></p>
+<div class="row" style="margin-top:10px"><button class="btn" id="toq">Answer five questions</button></div>
+<div class="qbox" id="qb"></div>
+</section>
+<section class="card hidden" id="end"><h2>Your result</h2><p class="big" id="score"></p><p id="msg"></p>
+<div class="row"><button class="btn" id="again">Play again</button></div></section>
+<footer>Your answers stay on this device. Nothing is sent or saved.<br>DBIS-11 Cybersecurity and Cloud Computing. &copy; 2026 Niranga Dharmaratna, School of Computing &amp; Engineering, National Institute of Business Management. Content <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, code MIT. <a href="../../LICENSE.html">Licence details</a>.</footer></main>
+<script>const DATA={"serverPerUnit": 600000, "serverRun": 60000, "cloudMonth": 80000, "hidden": [{"id": "out", "t": "Data leaving the cloud is charged", "pct": 8}, {"id": "idle", "t": "Test servers were left running and forgotten", "pct": 15}, {"id": "sup", "t": "A paid support plan was needed", "pct": 10}], "qs": [{"q": "Set December to 3 times. Which costs less over 3 years, with no hidden costs?", "o": ["Rent cloud", "Buy a server", "They cost exactly the same"], "a": 0, "keep": true, "why": "The server must be big enough for December all year: LKR 3.96 million. The cloud only grows in December: LKR 3.36 million."}, {"q": "Now set December to 1 time: sales are the same all year. Which costs less?", "o": ["Rent cloud", "Buy a server", "They cost exactly the same"], "a": 1, "keep": true, "why": "With no peak, the server is a little cheaper (LKR 2.76 million against 2.88 million). There is no one answer for every business: it depends on the peak."}, {"q": "Which of these is a hidden cost of the cloud?", "o": ["Test servers left running that nobody uses", "The monthly price shown on the website", "The cost of a new laptop"], "a": 0, "why": "A cost you did not expect when you signed up. Turn off what you do not use, and check the bill each month."}, {"q": "After two years, TeaLeaf wants to move to another provider, but it would take months and cost a lot. What is this called?", "o": ["Lock-in", "Pay as you go", "Scaling"], "a": 0, "why": "Lock-in: it is hard or costly to leave. Ask how to get your data out BEFORE you sign."}, {"q": "Buying a server needs a big payment now. The cloud is paid monthly. Why does this matter to a small business?", "o": ["It keeps cash free for tea stock and salaries", "Monthly bills are always smaller in total", "It means nothing can ever go down"], "a": 0, "why": "Paying monthly keeps cash in the business. It is not always cheaper in total, as the calculator shows."}]};
+
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fg(h){h=h.replace('#','');const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4));return (.2126*c[0]+.7152*c[1]+.0722*c[2])>.3?'#262A20':'#fff'}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function makeTimer(sec,onTick,onEnd){let left=sec*10,id=null;return{start(){this.stop();left=sec*10;onTick(1);id=setInterval(()=>{left--;onTick(left/(sec*10));if(left<=0){this.stop();onEnd()}},100)},stop(){if(id)clearInterval(id);id=null},used(){return sec-left/10}}}
+
+
+function askQ(box,q,onDone){box.innerHTML=`<p class="lab">${esc(q.q)}</p><div class="opts"></div><div class="fb"><p class="h"></p><p class="w"></p></div>`;
+ const o=box.querySelector('.opts'),fb=box.querySelector('.fb');
+ (q.keep?q.o.map((t,i)=>({t,i})):shuffle(q.o.map((t,i)=>({t,i})))).forEach(({t,i})=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<span><strong>${esc(t)}</strong></span>`;
+  b.onclick=()=>{o.querySelectorAll('.opt').forEach(x=>x.disabled=true);const ok=i===q.a;b.classList.add(ok?'right':'wrong');if(!ok)[...o.children].find(x=>x.textContent===q.o[q.a]).classList.add('right');
+   fb.querySelector('.h').textContent=ok?'Correct!':'Not this time. The answer is: '+q.o[q.a];fb.querySelector('.w').textContent=q.why;fb.className='fb show '+(ok?'good':'no');fb.scrollIntoView({block:'nearest',behavior:'smooth'});onDone(ok)};o.appendChild(b)})}
+function runQs(box,qs,onEach,onAll){let k=0;const nx=document.createElement('button');nx.className='btn hidden';nx.textContent='Next question';
+ const host=document.createElement('div');box.innerHTML='';box.appendChild(host);const row=document.createElement('div');row.className='row';row.style.marginTop='10px';row.appendChild(nx);box.appendChild(row);
+ function one(){nx.classList.add('hidden');const c=document.createElement('p');c.className='stage';c.textContent=`Question ${k+1} of ${qs.length}`;host.innerHTML='';host.appendChild(c);const qb=document.createElement('div');host.appendChild(qb);
+  askQ(qb,qs[k],ok=>{onEach(ok);k++;if(k<qs.length){nx.classList.remove('hidden');nx.focus({preventScroll:true})}else onAll()})}
+ nx.onclick=one;one()}
+
+let right=0;const f=n=>'LKR '+(n/1e6).toFixed(2)+' million';const fk=n=>'LKR '+Math.round(n).toLocaleString('en-US');
+$('#hid').innerHTML='<p class="lab" style="margin:0 0 4px">Hidden costs (cloud):</p>'+DATA.hidden.map(h=>`<label class="tog"><input type="checkbox" id="h_${h.id}"> <span>${esc(h.t)} (+${h.pct}%)</span></label>`).join('');
+function calc(){const p=+$('#peak').value;$('#pv').textContent=p+' times';let extra=0;DATA.hidden.forEach(h=>{if($('#h_'+h.id).checked)extra+=h.pct});
+ const sUp=DATA.serverPerUnit*p,s=sUp+DATA.serverRun*36,cm=DATA.cloudMonth*(1+extra/100),c=(cm*11+cm*p)*3,mx=Math.max(s,c);
+ $('#sTot').textContent=f(s);$('#cTot').textContent=f(c);$('#sBar').style.width=(s/mx*100)+'%';$('#cBar').style.width=(c/mx*100)+'%';
+ $('#sNow').textContent=`Pay now: ${fk(sUp)}, then ${fk(DATA.serverRun)} a month (power, repairs, IT time).`;$('#cNow').textContent=`Pay now: nothing. ${fk(cm)} a month, ${fk(cm*p)} in December.`;
+ $('#cs').classList.toggle('win',s<c);$('#cc').classList.toggle('win',c<s);
+ $('#why').textContent=s<c?'The server costs less here, but TeaLeaf must pay a lot of cash now.':c<s?'The cloud costs less here, and TeaLeaf pays nothing up front.':'They cost the same here.'}
+$('#peak').oninput=calc;DATA.hidden.forEach(h=>$('#h_'+h.id).onchange=calc);
+function begin(){right=0;$('#peak').value=3;DATA.hidden.forEach(h=>$('#h_'+h.id).checked=false);calc();$('#qb').innerHTML='';$('#toq').classList.remove('hidden');$('#start').classList.add('hidden');$('#end').classList.add('hidden');$('#play').classList.remove('hidden')}
+$('#toq').onclick=()=>{$('#toq').classList.add('hidden');DATA.hidden.forEach(h=>$('#h_'+h.id).checked=false);calc();runQs($('#qb'),DATA.qs,ok=>{if(ok)right++},()=>{const b=document.createElement('button');b.className='btn';b.textContent='See my result';b.onclick=end;$('#qb').appendChild(b)})};
+function end(){$('#play').classList.add('hidden');$('#end').classList.remove('hidden');$('#score').textContent=`${right} of ${DATA.qs.length}`;
+ $('#msg').textContent=right===DATA.qs.length?'Perfect. Buy or rent depends on the peak, the cash, and the hidden costs.':'Play again, and move the slider to find each answer.'}
+$('#go').onclick=begin;$('#again').onclick=begin;
+</script>
+</body></html>

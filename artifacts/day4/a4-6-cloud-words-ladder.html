@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4.6 Cloud Words Ladder | DBIS-11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#262A20;--teal:#667C7E;--tealText:#566A6C;--orange:#C7A887;--tanText:#7D5F3F;--ink:#262A20;--muted:#5A5F55;
+--tealT:#E1E6E6;--navyT:#D9D5D2;--orangeT:#EDDDCD;--line:#D9D5D2;--ok:#3F6B4A;--bad:#9A3B2E;--okT:#E7EFE8;--badT:#F6E7E3;--bg:#F4F2EF;--edge:#8F8A84}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Open Sans","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:17px}
+a{color:var(--tealText)}
+.top{background:var(--navy);color:#fff;padding:14px 20px}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.leaf{width:40px;height:40px;border-radius:50%;background:var(--teal);display:grid;place-items:center;flex:none}
+.leaf svg{width:22px;height:22px;fill:#fff}
+.top h1{font-size:1.25rem;margin:0;line-height:1.2}
+.top p{margin:2px 0 0;font-size:.85rem;color:var(--navyT)}
+.top a{color:var(--orangeT);font-size:.85rem;margin-left:auto;white-space:nowrap}
+.bars{display:flex;gap:5px;margin:8px 0 0}.bars i{height:5px;border-radius:2px;display:block}
+.bars i:first-child{width:46px;background:var(--teal)}.bars i:last-child{width:22px;background:var(--orange)}
+.wrap{max-width:760px;margin:0 auto}
+main{padding:18px 16px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 0 rgba(28,54,120,.06)}
+.card+.card{margin-top:14px}
+h2{color:var(--navy);font-size:1.3rem;margin:0 0 8px}
+.steps{padding-left:1.3em;margin:8px 0 16px}.steps li{margin:4px 0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--navy);color:#fff;min-height:48px}
+.btn.alt{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn:focus-visible,.opt:focus-visible,.mv:focus-visible,.chip:focus-visible,.tab:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.meta{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.timer{height:10px;background:#E5E7EB;border-radius:6px;overflow:hidden;margin-bottom:14px}
+.timer b{display:block;height:100%;width:100%;background:var(--teal);transition:width .2s linear}
+.timer b.low{background:var(--orange)}
+.q{font-size:1.25rem;font-weight:600;color:var(--ink);margin:4px 0 16px;min-height:3.2em}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center;min-height:56px}
+.opt .k{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.opt strong{display:block;color:var(--navy)}
+.opt small{color:var(--muted);font-size:.85rem}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--okT)}
+.opt.wrong{border-color:var(--bad);background:var(--badT)}
+.fb{margin-top:14px;border-radius:12px;padding:14px;display:none}
+.fb.show{display:block}.fb.good{background:var(--okT)}.fb.no{background:var(--badT)}
+.fb p{margin:4px 0}
+.fb .h{font-weight:800}.fb.good .h{color:var(--ok)}.fb.no .h{color:var(--bad)}
+.help{margin-top:14px}
+.help summary{cursor:pointer;font-weight:700;color:var(--tealText)}
+.help dl{margin:8px 0 0}.help dt{font-weight:700;color:var(--navy)}.help dd{margin:0 0 8px}
+.big{font-size:2.6rem;font-weight:800;color:var(--navy);margin:0}
+.review{margin:12px 0 0;padding:0;list-style:none}
+.review li{border-top:1px solid var(--line);padding:10px 0}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;border-radius:20px;padding:2px 10px;background:var(--tealT);color:var(--tealText)}
+.streak{color:var(--tanText);font-weight:700}
+.rank{list-style:none;margin:0;padding:0;counter-reset:r}
+.rank li{display:flex;align-items:center;gap:10px;border:2px solid var(--edge);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.rank .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800}
+.rank .t{flex:1}.rank .t small{display:block;color:var(--muted)}
+.mv{font:inherit;width:44px;height:44px;border-radius:10px;border:2px solid var(--edge);background:#fff;cursor:pointer;font-size:1.1rem}
+.mv[disabled]{opacity:.35;cursor:default}
+table.cmp{width:100%;border-collapse:collapse;font-size:.92rem}
+table.cmp th{background:var(--navy);color:#fff;text-align:left;padding:8px}
+table.cmp td{border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+.clue{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;margin-bottom:14px}
+.two{display:grid;gap:14px}
+@media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
+.lab{font-weight:800;color:var(--navy);margin:0 0 6px}
+.hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:20px}
+.study{display:grid;gap:10px;margin:10px 0 16px}
+.word{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.word b{color:var(--navy);font-size:1.05rem}.word p{margin:2px 0 0;font-size:.92rem}.word em{color:var(--muted);font-size:.88rem}
+.hear{font:inherit;font-size:.8rem;font-weight:700;border:1.5px solid var(--edge);background:#fff;border-radius:16px;padding:2px 10px;cursor:pointer;margin-left:8px;color:var(--tealText)}
+.mode{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.mode label{border:2px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer}
+.mode input{margin-right:6px}
+.lvl{display:inline-block;background:var(--orangeT);color:var(--tanText);font-weight:800;border-radius:8px;padding:2px 10px;font-size:.85rem;margin-bottom:6px}
+.frame{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;line-height:1.6;margin:10px 0;position:sticky;top:6px;z-index:5;box-shadow:0 2px 8px rgba(38,42,32,.15)}
+.slot{display:inline-block;border-bottom:3px solid var(--edge);min-width:6em;padding:0 4px;font-weight:700}
+.slot.t{border-color:var(--tanText);color:var(--tanText)}.slot.v{border-color:var(--navy);color:var(--navy)}.slot.h{border-color:var(--tealText);color:var(--tealText)}
+.cols3{display:grid;gap:14px}@media(min-width:700px){.cols3{grid-template-columns:repeat(3,1fr)}}
+.chips{display:grid;gap:8px}
+.chip{font:inherit;font-size:.95rem;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:10px;padding:10px 12px;cursor:pointer;min-height:48px}
+.chip[aria-pressed="true"]{background:var(--orangeT);border-color:var(--navy);font-weight:700}
+.reg{list-style:none;padding:0;margin:10px 0 0}
+.reg li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.reg li.fixed .s{text-decoration:line-through;color:var(--muted)}
+.reg .fixnote{display:none;margin:6px 0 0;color:var(--ok);font-weight:600}.reg li.fixed .fixnote{display:block}
+.goal{font-weight:800;color:var(--tanText)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tab{font:inherit;font-size:.9rem;font-weight:700;border:2px solid var(--edge);background:#fff;border-radius:18px;padding:6px 12px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab.done::after{content:" \2713";color:var(--ok)}.tab[aria-selected="true"].done::after{color:#BFD8C4}
+svg.net{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+.net text{font-family:inherit;font-size:12px;fill:var(--ink)}
+.net .lbl{font-weight:700}
+.net .link{stroke:#B8B3AD;stroke-width:1.5}
+.net .box{fill:#fff;stroke:var(--edge);stroke-width:1.5;transition:fill .3s}
+.net .inf .box{fill:var(--orange);stroke:var(--tanText)}
+.net .lock .box{fill:var(--navy);stroke:var(--navy)}.net .lock text.in{fill:#fff}
+.net .spy .box{stroke:var(--tanText);stroke-dasharray:4 3;stroke-width:2.5}
+.net .busy .box{fill:var(--badT);stroke:var(--bad)}
+.net .fade{opacity:.25;transition:opacity .4s}.net .show{opacity:1}
+.net .door{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4;opacity:0;transition:opacity .5s}
+.narr{background:var(--navyT);border-radius:12px;padding:12px 14px;margin:12px 0;min-height:3.2em;font-weight:600}
+.hero{display:flex;justify-content:center;margin:-6px 0 8px}.hero svg{width:100%;max-width:320px;height:auto}
+.pic{display:flex;justify-content:center;margin:8px 0}.pic svg{width:100%;max-width:240px;height:auto}
+.mail{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.mail .hd{background:var(--navyT);padding:10px 12px;font-size:.92rem}.mail .hd b{color:var(--navy)}
+.mail .bd{padding:12px;font-size:1rem;line-height:1.55}
+.mail .kind{display:inline-block;font-size:.75rem;font-weight:800;background:var(--orangeT);color:var(--tanText);border-radius:6px;padding:1px 8px;margin-bottom:4px}
+.flag{cursor:pointer;border-bottom:2px dotted transparent;border-radius:3px}
+.flag.found{background:var(--badT);border-bottom-color:var(--bad)}
+.flag.shown{background:var(--badT)}
+.flaglist{margin:8px 0 0;padding-left:1.2em}.flaglist li{margin:4px 0}
+.story{font-size:1.08rem}.story .scene{background:var(--navyT);border-radius:12px;padding:14px;margin-bottom:12px}
+.path{font-size:.9rem;color:var(--muted)}
+.meter{height:14px;border-radius:8px;background:#E5E1DC;overflow:hidden;margin:8px 0}.meter b{display:block;height:100%;width:0;transition:width .3s}
+.pw{font:inherit;font-size:1.15rem;width:100%;padding:12px;border:2px solid var(--edge);border-radius:10px}
+.pw:focus{outline:3px solid var(--navy);outline-offset:1px}
+.grid{border-collapse:collapse;width:100%;font-size:.9rem}.grid th,.grid td{border:1px solid var(--line);padding:6px;text-align:center}.grid th{background:var(--navy);color:#fff}.grid td:first-child{text-align:left;font-weight:700}
+.grid input{width:22px;height:22px}
+.grid th:first-child,.grid td:first-child{position:sticky;left:0;z-index:1;background:#fff;min-width:92px}.grid th:first-child{background:var(--navy)}
+.grid td.miss{background:var(--badT)}.grid td.hit{background:var(--okT)}
+.log{font-family:Consolas,Menlo,monospace;font-size:.88rem;background:#262A20;color:#EDDDCD;border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.stage{font-weight:800;color:var(--navy);margin:0 0 6px}
+.qbox{margin-top:12px}
+.story{background:var(--orangeT);border-radius:12px;padding:10px 12px;margin:0 0 10px}
+.story b{color:var(--navy)}
+.stack{display:grid;gap:6px;margin:8px 0}
+.lyr{display:grid;grid-template-columns:1fr 130px;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.lyr .nm{font-weight:700}.lyr .nm small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.who{font:inherit;font-weight:800;border-radius:18px;border:2px solid var(--edge);padding:8px 6px;background:var(--navyT);cursor:pointer;min-height:44px}
+.who.you{background:#7D5F3F;color:#fff;border-color:#7D5F3F}.who.pro{background:#667C7E;color:#fff;border-color:#667C7E}
+.lyr.ok{border:2px solid var(--ok)}.lyr.bad{border:2px solid var(--bad)}
+.meters{display:grid;gap:8px;margin:8px 0 12px}
+.cap{font-size:.9rem;font-weight:700}.cap .tr{height:18px;border-radius:9px;background:var(--navyT);overflow:hidden;margin-top:3px}
+.cap .tr b{display:block;height:100%;background:#667C7E;transition:width .25s}.cap .tr b.full{background:#9A3B2E}
+.vms{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(min-width:560px){.vms{grid-template-columns:1fr 1fr 1fr}}
+.vm{font:inherit;text-align:left;border:2px solid var(--edge);border-radius:12px;padding:8px 10px;background:#fff;cursor:pointer;min-height:56px}
+.vm b{display:block}.vm small{color:var(--muted)}.vm.on{background:var(--navy);color:#fff;border-color:var(--navy)}.vm.on small{color:#EDDDCD}
+.vm.need{box-shadow:inset 0 0 0 2px #C7A887}.vm.shake{animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.ctl{margin:8px 0 12px}.ctl label{font-weight:700;display:block}.ctl input[type=range]{width:100%;accent-color:#667C7E}
+.tog{display:flex;gap:10px;align-items:flex-start;margin:6px 0;font-weight:600}.tog input{width:22px;height:22px;accent-color:#7D5F3F;flex:none;margin-top:1px}
+.costs{display:grid;gap:12px}@media(min-width:600px){.costs{grid-template-columns:1fr 1fr}}
+.cost{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.cost h3{margin:0 0 6px;font-size:1rem;color:var(--navy)}.cost .n{font-size:1.35rem;font-weight:800}
+.cost .bar{height:14px;border-radius:7px;background:var(--navyT);margin:6px 0 2px;overflow:hidden}.cost .bar b{display:block;height:100%}
+.cost.win{border:2px solid var(--ok)}
+.small{font-size:.85rem;color:var(--muted)}
+</style></head>
+<body>
+<header class="top"><div class="wrap"><div class="leaf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.2 3.8 21.3l1.9.7 1-2.3c.5.2 1 .3 1.3.3C19 20 22 3 22 3c-1 2-8 2.3-13 3.3S2 11.5 2 13.5c0 2 1.8 3.8 1.8 3.8C7 8 17 8 17 8z"/></svg></div>
+<div><h1>Cloud Words Ladder</h1><p>A4.6  |  Day 4  |  Sessions 11.7 and 11.8</p><div class="bars"><i></i><i></i></div></div>
+<a href="../../index.html">Course site</a></div></header>
+<main class="wrap"><section class="card" id="start"><div class="hero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 252" role="img" aria-label="The MD and the IT officer look at a cloud full of rented servers, linked to the IT officer's laptop. A note says: pay each month for what you use."><title>The MD and the IT officer look at a cloud full of rented servers, linked to the IT officer's laptop. A note says: pay each month for what you use.</title><ellipse cx="170" cy="240" rx="160" ry="11" fill="#D9D5D2"/><ellipse cx="170" cy="138" rx="165" ry="106" fill="#EDDDCD"/><g transform="translate(256,58) scale(0.78)"><path d="M-80 30 C-110 30 -110 -10 -78 -12 C-80 -46 -30 -56 -14 -30 C0 -62 60 -58 62 -20 C96 -22 104 30 72 30 Z" fill="#FFFFFF" stroke="#4E5F61" stroke-width="3"/></g><rect x="212" y="42" width="28" height="38" rx="4" fill="#262A20"/><rect x="216" y="46.0" width="20" height="7.0" rx="2" fill="#4E5F61"/><circle cx="230" cy="49.5" r="2.2" fill="#C7A887"/><rect x="220" y="48.5" width="11" height="2" fill="#D9D5D2"/><rect x="216" y="56.0" width="20" height="7.0" rx="2" fill="#4E5F61"/><circle cx="230" cy="59.5" r="2.2" fill="#C7A887"/><rect x="220" y="58.5" width="11" height="2" fill="#D9D5D2"/><rect x="216" y="66.0" width="20" height="7.0" rx="2" fill="#4E5F61"/><circle cx="230" cy="69.5" r="2.2" fill="#C7A887"/><rect x="220" y="68.5" width="11" height="2" fill="#D9D5D2"/><rect x="242" y="37" width="28" height="43" rx="4" fill="#262A20"/><rect x="246" y="41.0" width="20" height="8.7" rx="2" fill="#4E5F61"/><circle cx="260" cy="45.3" r="2.2" fill="#C7A887"/><rect x="250" y="44.3" width="11" height="2" fill="#D9D5D2"/><rect x="246" y="52.7" width="20" height="8.7" rx="2" fill="#4E5F61"/><circle cx="260" cy="57.0" r="2.2" fill="#C7A887"/><rect x="250" y="56.0" width="11" height="2" fill="#D9D5D2"/><rect x="246" y="64.3" width="20" height="8.7" rx="2" fill="#4E5F61"/><circle cx="260" cy="68.7" r="2.2" fill="#C7A887"/><rect x="250" y="67.7" width="11" height="2" fill="#D9D5D2"/><rect x="272" y="42" width="28" height="38" rx="4" fill="#262A20"/><rect x="276" y="46.0" width="20" height="7.0" rx="2" fill="#4E5F61"/><circle cx="290" cy="49.5" r="2.2" fill="#C7A887"/><rect x="280" y="48.5" width="11" height="2" fill="#D9D5D2"/><rect x="276" y="56.0" width="20" height="7.0" rx="2" fill="#4E5F61"/><circle cx="290" cy="59.5" r="2.2" fill="#C7A887"/><rect x="280" y="58.5" width="11" height="2" fill="#D9D5D2"/><rect x="276" y="66.0" width="20" height="7.0" rx="2" fill="#4E5F61"/><circle cx="290" cy="69.5" r="2.2" fill="#C7A887"/><rect x="280" y="68.5" width="11" height="2" fill="#D9D5D2"/><text x="258" y="104" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="10" font-weight="800" fill="#4E5F61" text-anchor="middle">Rented servers</text><g transform="translate(4 40) scale(1.0)"><path d="M36 116 L84 116 L90 194 L30 194 Z" fill="#667C7E"/><path d="M48 130 L43.8 192" stroke="#516364" stroke-width="1.4"/><path d="M56 130 L54.6 192" stroke="#516364" stroke-width="1.4"/><path d="M64 130 L65.4 192" stroke="#516364" stroke-width="1.4"/><path d="M72 130 L76.2 192" stroke="#516364" stroke-width="1.4"/><path d="M30 188 L90 188" stroke="#C7A887" stroke-width="5"/><ellipse cx="49" cy="197" rx="11" ry="5" fill="#262A20"/><ellipse cx="71" cy="197" rx="11" ry="5" fill="#262A20"/><rect x="53" y="42" width="14" height="20" fill="#B97A4F"/><path d="M53 50 Q60 56 67 50 L67 56 Q60 60 53 56 Z" fill="#94613F"/><path d="M36 72 Q36 59 48 57 L72 57 Q84 59 84 72 L83 122 Q60 127 37 122 Z" fill="#EDDDCD"/><path d="M40 57 L55 57 L86 116 L70 124 Z" fill="#667C7E"/><path d="M55 57 L86 116" stroke="#C7A887" stroke-width="3"/><path d="M38 66 L33 92" stroke="#EDDDCD" stroke-width="12" stroke-linecap="round"/><path d="M33 92 L31 114" stroke="#B97A4F" stroke-width="9" stroke-linecap="round"/><path d="M82 66 L100 72" stroke="#EDDDCD" stroke-width="12" stroke-linecap="round"/><path d="M100 72 L116 62" stroke="#B97A4F" stroke-width="9" stroke-linecap="round"/><circle cx="31" cy="117" r="5.8" fill="#B97A4F"/><path d="M27 119 Q31 122 35 119" stroke="#94613F" stroke-width="1" fill="none"/><circle cx="116" cy="65" r="5.8" fill="#B97A4F"/><path d="M112 67 Q116 70 120 67" stroke="#94613F" stroke-width="1" fill="none"/><ellipse cx="43" cy="32" rx="3.2" ry="5" fill="#94613F"/><ellipse cx="77" cy="32" rx="3.2" ry="5" fill="#94613F"/><ellipse cx="60" cy="30" rx="17" ry="19" fill="#B97A4F"/><path d="M42.5 30 C40 11 52 7 60 7 C70 7 81 11 77.5 30 C76 20 70 16 60 16 C51 16 45 20 42.5 30 Z" fill="#8E8A85"/><circle cx="60" cy="6" r="8" fill="#8E8A85"/><ellipse cx="53.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><ellipse cx="66.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><path d="M50 26 L56 25.3 M64 25.3 L70 26" stroke="#5E5A55" stroke-width="1.8" stroke-linecap="round"/><path d="M60 31 Q62.8 37 59.4 37.6" stroke="#94613F" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M54 41 Q60 46.5 66 41" stroke="#262A20" stroke-width="1.6" fill="#FFFFFF" stroke-linecap="round"/><circle cx="53.5" cy="31" r="4.8" fill="none" stroke="#262A20" stroke-width="1.4"/><circle cx="66.5" cy="31" r="4.8" fill="none" stroke="#262A20" stroke-width="1.4"/><path d="M58.3 31 L61.7 31" stroke="#262A20" stroke-width="1.4"/></g><g transform="translate(118 76) scale(0.8)"><path d="M73 18 C92 20 94 50 82 62 C85 46 82 32 72 27 Z" fill="#1F1B17"/><path d="M38 118 L59 118 L58 194 L42 194 Z" fill="#262A20"/><path d="M61 118 L82 118 L78 194 L62 194 Z" fill="#262A20"/><path d="M59 124 L60 190" stroke="#1C1F18" stroke-width="1.2"/><ellipse cx="49" cy="197" rx="11" ry="5" fill="#262A20"/><ellipse cx="71" cy="197" rx="11" ry="5" fill="#262A20"/><rect x="53" y="42" width="14" height="20" fill="#A56B43"/><path d="M53 50 Q60 56 67 50 L67 56 Q60 60 53 56 Z" fill="#845535"/><path d="M36 72 Q36 59 48 57 L72 57 Q84 59 84 72 L83 122 Q60 127 37 122 Z" fill="#C7A887"/><path d="M52 57 L60 70 L68 57 L64 57 L60 64 L56 57 Z" fill="#A98E72"/><path d="M60 70 L60 120" stroke="#9F866C" stroke-width="1.2"/><circle cx="60" cy="78" r="1.2" fill="#8B755E"/><circle cx="60" cy="90" r="1.2" fill="#8B755E"/><circle cx="60" cy="102" r="1.2" fill="#8B755E"/><path d="M55 58 L60 86 L65 58" fill="none" stroke="#C7A887" stroke-width="2"/><rect x="54.5" y="85" width="11" height="14" rx="1.5" fill="#FFFFFF"/><rect x="54.5" y="85" width="11" height="4" fill="#667C7E"/><path d="M38 66 L32 94" stroke="#C7A887" stroke-width="12" stroke-linecap="round"/><path d="M32 94 L52 102" stroke="#A56B43" stroke-width="9" stroke-linecap="round"/><path d="M82 66 L90 94" stroke="#C7A887" stroke-width="12" stroke-linecap="round"/><path d="M90 94 L68 102" stroke="#A56B43" stroke-width="9" stroke-linecap="round"/><rect x="40" y="95" width="40" height="7" rx="2" fill="#D9D5D2" stroke="#979593"/><circle cx="60" cy="98.5" r="1.5" fill="#667C7E"/><circle cx="52" cy="105" r="5.8" fill="#A56B43"/><path d="M48 107 Q52 110 56 107" stroke="#845535" stroke-width="1" fill="none"/><circle cx="68" cy="105" r="5.8" fill="#A56B43"/><path d="M64 107 Q68 110 72 107" stroke="#845535" stroke-width="1" fill="none"/><ellipse cx="43" cy="32" rx="3.2" ry="5" fill="#845535"/><ellipse cx="77" cy="32" rx="3.2" ry="5" fill="#845535"/><ellipse cx="60" cy="30" rx="17" ry="19" fill="#A56B43"/><path d="M42.5 30 C40 11 52 7 60 7 C70 7 81 11 77.5 30 C76 20 70 16 60 16 C51 16 45 20 42.5 30 Z" fill="#1F1B17"/><ellipse cx="53.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><ellipse cx="66.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><path d="M50 26 L56 25.3 M64 25.3 L70 26" stroke="#1F1B17" stroke-width="1.8" stroke-linecap="round"/><path d="M60 31 Q62.8 37 59.4 37.6" stroke="#845535" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M54 41 Q60 46.5 66 41" stroke="#262A20" stroke-width="1.6" fill="#FFFFFF" stroke-linecap="round"/></g><path d="M190 140 C206 132 218 124 228 112" fill="none" stroke="#4E5F61" stroke-width="2.5" stroke-dasharray="5 4"/><text x="274" y="176" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="10" font-weight="800" fill="#9C7F5F" text-anchor="middle">Pay each month</text><text x="274" y="190" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="10" font-weight="800" fill="#9C7F5F" text-anchor="middle">for what you use</text></svg></div><h2>Learn the words, then climb the ladder</h2>
+<p>Read each word. Tap <strong>Hear it</strong> to hear it. Then start the ladder. It has three rungs:</p>
+<ol class="steps"><li><strong>Meaning:</strong> choose the word for the meaning.</li><li><strong>Example:</strong> choose the word for a TeaLeaf example.</li><li><strong>Right or wrong?</strong> Is the word used correctly?</li></ol>
+<div class="study" id="study"></div>
+<p class="lab">Choose your mode</p>
+<div class="mode" role="radiogroup"><label><input type="radio" name="mode" value="0" checked>Relaxed: no clock</label><label><input type="radio" name="mode" value="20">Challenge: 20 seconds</label></div>
+<button class="btn" id="go">Start the ladder</button></section>
+<section class="card hidden" id="play">
+<span class="lvl" id="lvl"></span>
+<div class="meta"><span id="count"></span><span><span class="streak" id="streak"></span> <span id="pts"></span></span></div>
+<div class="timer" id="tbox"><b id="bar"></b></div>
+<div class="q" id="q" aria-live="polite"></div>
+<div class="opts" id="opts"></div>
+<div class="fb" id="fb" aria-live="polite"><p class="h" id="fbh"></p><p id="fbw"></p><button class="btn" id="next">Next</button></div>
+</section>
+<section class="card hidden" id="end"><h2>Your words</h2><p class="big" id="score"></p><p id="msg"></p>
+<div style="overflow-x:auto"><table class="cmp"><thead><tr><th>Word</th><th>Result</th><th>Simple meaning</th></tr></thead><tbody id="mast"></tbody></table></div>
+<div class="row" style="margin-top:14px"><button class="btn" id="again">Climb again</button><button class="btn alt" id="studyagain">Study the words</button></div></section>
+
+<footer>Your answers stay on this device. Nothing is sent or saved.<br>DBIS-11 Cybersecurity and Cloud Computing. &copy; 2026 Niranga Dharmaratna, School of Computing &amp; Engineering, National Institute of Business Management. Content <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, code MIT. <a href="../../LICENSE.html">Licence details</a>.</footer></main>
+<script>const DATA={"perLevel": 8, "words": [{"w": "Cloud", "m": "Renting computing over the internet, and paying for what you use.", "ex": ["TeaLeaf rents servers from a big provider each month.", "Staff open their files from any place, over the internet."]}, {"w": "On-premises", "m": "Your own computers, in your own building, that you buy and look after.", "ex": ["The old email server in TeaLeaf's back room.", "Nadee repairs the office server herself."]}, {"w": "IaaS", "m": "Renting the machines. You look after everything on them.", "ex": ["Nadee rents servers and installs the stock software herself.", "Like renting a kitchen: you bring the recipe and the food."]}, {"w": "PaaS", "m": "Renting a ready place to build and run your own app.", "ex": ["A developer uploads TeaLeaf's shop app; the provider runs it.", "Like bringing your own recipe to a pizza shop."]}, {"w": "SaaS", "m": "Renting a finished app that you just use.", "ex": ["Gmail, Zoom and online accounting software.", "Like eating at a pizza restaurant."]}, {"w": "Public cloud", "m": "Cloud shared by many customers, run by a big provider.", "ex": ["A small shop starts this week on a big provider.", "Like taking the bus: many people share it."]}, {"w": "Private cloud", "m": "Cloud used by one organisation only.", "ex": ["A bank keeps customer records on machines no one else uses.", "Like your own car."]}, {"w": "Hybrid cloud", "m": "Public and private cloud, joined together.", "ex": ["Salary files on a private cloud, the shop on a public cloud.", "The car to the station, then the bus."]}, {"w": "Virtual machine", "m": "A pretend computer that runs inside a real one.", "ex": ["Email, shop and accounts all run on one real server.", "A cloud provider gives you a new one in two minutes."]}, {"w": "Pay as you go", "m": "Paying only for what you use, each month.", "ex": ["TeaLeaf pays more in December and less in January.", "Turning off a server stops the cost."]}, {"w": "Scaling", "m": "Growing or shrinking how much you rent, when you need to.", "ex": ["Adding two shop servers for December, removing them in January.", "The cloud grows when orders grow."]}, {"w": "Hidden cost", "m": "A cost that you did not expect when you signed up.", "ex": ["Test servers left running for months.", "A charge for data leaving the cloud."]}, {"w": "Lock-in", "m": "When it is very hard or costly to move to another provider.", "ex": ["Moving TeaLeaf's shop would take months of work.", "The data is in a format only one provider uses."]}], "checks": [{"s": "The cloud means buying servers and keeping them in your office.", "right": false, "w": "Cloud", "fix": "Wrong. That is on-premises. The cloud is renting over the internet."}, {"s": "SaaS is a finished app that you just use, like Gmail.", "right": true, "w": "SaaS", "fix": "Right. You bring only your data."}, {"s": "With IaaS, the provider looks after your operating system and app.", "right": false, "w": "IaaS", "fix": "Wrong. With IaaS you rent only the machines. You look after everything on them."}, {"s": "With PaaS, you bring your own app and the provider runs everything under it.", "right": true, "w": "PaaS", "fix": "Right. Like bringing your recipe to a pizza shop."}, {"s": "A private cloud is shared with many other companies.", "right": false, "w": "Private cloud", "fix": "Wrong. That is public cloud. A private cloud is for one organisation only."}, {"s": "Hybrid cloud joins public and private cloud together.", "right": true, "w": "Hybrid cloud", "fix": "Right. Some of each."}, {"s": "Many virtual machines can run on one real server.", "right": true, "w": "Virtual machine", "fix": "Right. That saves money, space and power."}, {"s": "If the real server breaks, its virtual machines keep running.", "right": false, "w": "Virtual machine", "fix": "Wrong. They all live inside it, so they all stop."}, {"s": "Scaling means the cloud can grow for December and shrink in January.", "right": true, "w": "Scaling", "fix": "Right. And you pay only for what you use."}, {"s": "Lock-in means it is easy to move to another provider.", "right": false, "w": "Lock-in", "fix": "Wrong. Lock-in means it is hard or costly to leave."}, {"s": "Forgotten test servers that keep running are a hidden cost.", "right": true, "w": "Hidden cost", "fix": "Right. Check the bill every month."}, {"s": "Pay as you go means paying a big amount up front.", "right": false, "w": "Pay as you go", "fix": "Wrong. You pay each month, only for what you used."}]};
+
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fg(h){h=h.replace('#','');const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4));return (.2126*c[0]+.7152*c[1]+.0722*c[2])>.3?'#262A20':'#fff'}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function makeTimer(sec,onTick,onEnd){let left=sec*10,id=null;return{start(){this.stop();left=sec*10;onTick(1);id=setInterval(()=>{left--;onTick(left/(sec*10));if(left<=0){this.stop();onEnd()}},100)},stop(){if(id)clearInterval(id);id=null},used(){return sec-left/10}}}
+
+
+
+const canSpeak='speechSynthesis' in window;
+function say(t){if(!canSpeak)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=.85;speechSynthesis.speak(u)}
+function hearBtn(t){return canSpeak?`<button class="hear" type="button" data-say="${esc(t)}" aria-label="Hear: ${esc(t)}">Hear it</button>`:''}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(b)say(b.dataset.say)});
+
+const W=DATA.words,K=DATA.perLevel;let Q=[],i=0,pts=0,streak=0,sec=0,locked=false,stat={};
+$('#study').innerHTML=W.map(w=>`<div class="word"><b>${esc(w.w)}</b>${hearBtn(w.w+'. '+w.m)}<p>${esc(w.m)}</p><em>Example: ${esc(w.ex[0])}</em></div>`).join('');
+const timer=makeTimer(20,f=>{const b=$('#bar');b.style.width=(f*100)+'%';b.classList.toggle('low',f<.3)},()=>answer(null));
+function pick(n,arr){return shuffle(arr).slice(0,n)}
+function build(){Q=[];
+ pick(K,W).forEach(w=>{const others=pick(3,W.filter(x=>x!==w)).map(x=>x.w);Q.push({lvl:'Rung 1: Meaning',text:w.m,say:w.m,opts:shuffle([w.w,...others]),ans:w.w,word:w.w,why:`"${w.w}" means: ${w.m}`})});
+ pick(K,W).forEach(w=>{const ex=w.ex[Math.floor(Math.random()*w.ex.length)];const others=pick(3,W.filter(x=>x!==w)).map(x=>x.w);Q.push({lvl:'Rung 2: Example',text:ex,say:ex,opts:shuffle([w.w,...others]),ans:w.w,word:w.w,why:`This is an example of ${w.w.toLowerCase()}: ${w.m.charAt(0).toLowerCase()+w.m.slice(1)}`})});
+ pick(K,DATA.checks).forEach(c=>Q.push({lvl:'Rung 3: Right or wrong?',text:c.s,say:c.s,opts:['Right','Wrong'],ans:c.right?'Right':'Wrong',word:c.w,why:c.fix}));}
+function begin(){sec=+document.querySelector('input[name=mode]:checked').value;build();i=0;pts=0;streak=0;stat={};W.forEach(w=>stat[w.w]={ok:0,n:0});
+ $('#tbox').classList.toggle('hidden',!sec);$('#start').classList.add('hidden');$('#end').classList.add('hidden');$('#play').classList.remove('hidden');show()}
+function show(){locked=false;const it=Q[i];$('#lvl').textContent=it.lvl;$('#count').textContent=`Question ${i+1} of ${Q.length}`;$('#pts').textContent=`${pts} points`;$('#streak').textContent=streak>=3?`${streak} in a row!`:'';
+ $('#q').innerHTML=esc(it.text)+hearBtn(it.say);$('#fb').className='fb';const box=$('#opts');box.innerHTML='';
+ it.opts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.dataset.k=o;b.innerHTML=`<span><strong>${esc(o)}</strong></span>`;b.onclick=()=>answer(o);box.appendChild(b)});
+ box.querySelector('button').focus({preventScroll:true});if(sec)timer.start()}
+function answer(k){if(locked)return;locked=true;timer.stop();const it=Q[i],ok=k===it.ans;
+ document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.dataset.k===it.ans)b.classList.add('right');else if(b.dataset.k===k)b.classList.add('wrong')});
+ if(stat[it.word]){stat[it.word].n++;if(ok)stat[it.word].ok++}
+ if(ok){streak++;pts+=10;$('#fbh').textContent='Correct! +10'}else{streak=0;$('#fbh').textContent=k===null?`Time is up. The answer is: ${it.ans}.`:`Not this time. The answer is: ${it.ans}.`}
+ $('#fbw').textContent=it.why;$('#fb').className='fb show '+(ok?'good':'no');$('#pts').textContent=`${pts} points`;$('#fb').scrollIntoView({block:'nearest',behavior:'smooth'});$('#next').focus({preventScroll:true})}
+$('#next').onclick=()=>{i++;if(i<Q.length)show();else end()};
+function end(){$('#play').classList.add('hidden');$('#end').classList.remove('hidden');const right=pts/10;$('#score').textContent=`${right} of ${Q.length}`;
+ const weak=W.filter(w=>stat[w.w].n&&stat[w.w].ok<stat[w.w].n);
+ $('#msg').textContent=weak.length?`Study these words again: ${weak.map(w=>w.w).join(', ')}.`:'You know all the words you met. Try Challenge mode.';
+ $('#mast').innerHTML=W.map(w=>{const s=stat[w.w];const r=!s.n?'Not asked this time':s.ok===s.n?`${s.ok} of ${s.n}: well done`:`${s.ok} of ${s.n}: study again`;return `<tr><td><strong>${esc(w.w)}</strong>${hearBtn(w.w)}</td><td>${r}</td><td>${esc(w.m)}</td></tr>`}).join('')}
+$('#go').onclick=begin;$('#again').onclick=begin;$('#studyagain').onclick=()=>{$('#end').classList.add('hidden');$('#start').classList.remove('hidden');window.scrollTo(0,0)};
+</script>
+</body></html>
