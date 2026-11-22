@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3.5 Hash Fingerprint | DBIS-11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#262A20;--teal:#667C7E;--tealText:#566A6C;--orange:#C7A887;--tanText:#7D5F3F;--ink:#262A20;--muted:#5A5F55;
+--tealT:#E1E6E6;--navyT:#D9D5D2;--orangeT:#EDDDCD;--line:#D9D5D2;--ok:#3F6B4A;--bad:#9A3B2E;--okT:#E7EFE8;--badT:#F6E7E3;--bg:#F4F2EF;--edge:#8F8A84}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Open Sans","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:17px}
+a{color:var(--tealText)}
+.top{background:var(--navy);color:#fff;padding:14px 20px}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.leaf{width:40px;height:40px;border-radius:50%;background:var(--teal);display:grid;place-items:center;flex:none}
+.leaf svg{width:22px;height:22px;fill:#fff}
+.top h1{font-size:1.25rem;margin:0;line-height:1.2}
+.top p{margin:2px 0 0;font-size:.85rem;color:var(--navyT)}
+.top a{color:var(--orangeT);font-size:.85rem;margin-left:auto;white-space:nowrap}
+.bars{display:flex;gap:5px;margin:8px 0 0}.bars i{height:5px;border-radius:2px;display:block}
+.bars i:first-child{width:46px;background:var(--teal)}.bars i:last-child{width:22px;background:var(--orange)}
+.wrap{max-width:760px;margin:0 auto}
+main{padding:18px 16px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 0 rgba(28,54,120,.06)}
+.card+.card{margin-top:14px}
+h2{color:var(--navy);font-size:1.3rem;margin:0 0 8px}
+.steps{padding-left:1.3em;margin:8px 0 16px}.steps li{margin:4px 0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--navy);color:#fff;min-height:48px}
+.btn.alt{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn:focus-visible,.opt:focus-visible,.mv:focus-visible,.chip:focus-visible,.tab:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.meta{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.timer{height:10px;background:#E5E7EB;border-radius:6px;overflow:hidden;margin-bottom:14px}
+.timer b{display:block;height:100%;width:100%;background:var(--teal);transition:width .2s linear}
+.timer b.low{background:var(--orange)}
+.q{font-size:1.25rem;font-weight:600;color:var(--ink);margin:4px 0 16px;min-height:3.2em}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center;min-height:56px}
+.opt .k{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.opt strong{display:block;color:var(--navy)}
+.opt small{color:var(--muted);font-size:.85rem}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--okT)}
+.opt.wrong{border-color:var(--bad);background:var(--badT)}
+.fb{margin-top:14px;border-radius:12px;padding:14px;display:none}
+.fb.show{display:block}.fb.good{background:var(--okT)}.fb.no{background:var(--badT)}
+.fb p{margin:4px 0}
+.fb .h{font-weight:800}.fb.good .h{color:var(--ok)}.fb.no .h{color:var(--bad)}
+.help{margin-top:14px}
+.help summary{cursor:pointer;font-weight:700;color:var(--tealText)}
+.help dl{margin:8px 0 0}.help dt{font-weight:700;color:var(--navy)}.help dd{margin:0 0 8px}
+.big{font-size:2.6rem;font-weight:800;color:var(--navy);margin:0}
+.review{margin:12px 0 0;padding:0;list-style:none}
+.review li{border-top:1px solid var(--line);padding:10px 0}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;border-radius:20px;padding:2px 10px;background:var(--tealT);color:var(--tealText)}
+.streak{color:var(--tanText);font-weight:700}
+.rank{list-style:none;margin:0;padding:0;counter-reset:r}
+.rank li{display:flex;align-items:center;gap:10px;border:2px solid var(--edge);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.rank .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800}
+.rank .t{flex:1}.rank .t small{display:block;color:var(--muted)}
+.mv{font:inherit;width:44px;height:44px;border-radius:10px;border:2px solid var(--edge);background:#fff;cursor:pointer;font-size:1.1rem}
+.mv[disabled]{opacity:.35;cursor:default}
+table.cmp{width:100%;border-collapse:collapse;font-size:.92rem}
+table.cmp th{background:var(--navy);color:#fff;text-align:left;padding:8px}
+table.cmp td{border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+.clue{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;margin-bottom:14px}
+.two{display:grid;gap:14px}
+@media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
+.lab{font-weight:800;color:var(--navy);margin:0 0 6px}
+.hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:20px}
+.study{display:grid;gap:10px;margin:10px 0 16px}
+.word{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.word b{color:var(--navy);font-size:1.05rem}.word p{margin:2px 0 0;font-size:.92rem}.word em{color:var(--muted);font-size:.88rem}
+.hear{font:inherit;font-size:.8rem;font-weight:700;border:1.5px solid var(--edge);background:#fff;border-radius:16px;padding:2px 10px;cursor:pointer;margin-left:8px;color:var(--tealText)}
+.mode{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.mode label{border:2px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer}
+.mode input{margin-right:6px}
+.lvl{display:inline-block;background:var(--orangeT);color:var(--tanText);font-weight:800;border-radius:8px;padding:2px 10px;font-size:.85rem;margin-bottom:6px}
+.frame{background:var(--navyT);border-radius:12px;padding:14px;font-size:1.1rem;line-height:1.6;margin:10px 0;position:sticky;top:6px;z-index:5;box-shadow:0 2px 8px rgba(38,42,32,.15)}
+.slot{display:inline-block;border-bottom:3px solid var(--edge);min-width:6em;padding:0 4px;font-weight:700}
+.slot.t{border-color:var(--tanText);color:var(--tanText)}.slot.v{border-color:var(--navy);color:var(--navy)}.slot.h{border-color:var(--tealText);color:var(--tealText)}
+.cols3{display:grid;gap:14px}@media(min-width:700px){.cols3{grid-template-columns:repeat(3,1fr)}}
+.chips{display:grid;gap:8px}
+.chip{font:inherit;font-size:.95rem;text-align:left;border:2px solid var(--edge);background:#fff;border-radius:10px;padding:10px 12px;cursor:pointer;min-height:48px}
+.chip[aria-pressed="true"]{background:var(--orangeT);border-color:var(--navy);font-weight:700}
+.reg{list-style:none;padding:0;margin:10px 0 0}
+.reg li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.reg li.fixed .s{text-decoration:line-through;color:var(--muted)}
+.reg .fixnote{display:none;margin:6px 0 0;color:var(--ok);font-weight:600}.reg li.fixed .fixnote{display:block}
+.goal{font-weight:800;color:var(--tanText)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tab{font:inherit;font-size:.9rem;font-weight:700;border:2px solid var(--edge);background:#fff;border-radius:18px;padding:6px 12px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab.done::after{content:" \2713";color:var(--ok)}.tab[aria-selected="true"].done::after{color:#BFD8C4}
+svg.net{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+.net text{font-family:inherit;font-size:12px;fill:var(--ink)}
+.net .lbl{font-weight:700}
+.net .link{stroke:#B8B3AD;stroke-width:1.5}
+.net .box{fill:#fff;stroke:var(--edge);stroke-width:1.5;transition:fill .3s}
+.net .inf .box{fill:var(--orange);stroke:var(--tanText)}
+.net .lock .box{fill:var(--navy);stroke:var(--navy)}.net .lock text.in{fill:#fff}
+.net .spy .box{stroke:var(--tanText);stroke-dasharray:4 3;stroke-width:2.5}
+.net .busy .box{fill:var(--badT);stroke:var(--bad)}
+.net .fade{opacity:.25;transition:opacity .4s}.net .show{opacity:1}
+.net .door{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4;opacity:0;transition:opacity .5s}
+.narr{background:var(--navyT);border-radius:12px;padding:12px 14px;margin:12px 0;min-height:3.2em;font-weight:600}
+.hero{display:flex;justify-content:center;margin:-6px 0 8px}.hero svg{width:100%;max-width:320px;height:auto}
+.pic{display:flex;justify-content:center;margin:8px 0}.pic svg{width:100%;max-width:240px;height:auto}
+.mail{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.mail .hd{background:var(--navyT);padding:10px 12px;font-size:.92rem}.mail .hd b{color:var(--navy)}
+.mail .bd{padding:12px;font-size:1rem;line-height:1.55}
+.mail .kind{display:inline-block;font-size:.75rem;font-weight:800;background:var(--orangeT);color:var(--tanText);border-radius:6px;padding:1px 8px;margin-bottom:4px}
+.flag{cursor:pointer;border-bottom:2px dotted transparent;border-radius:3px}
+.flag.found{background:var(--badT);border-bottom-color:var(--bad)}
+.flag.shown{background:var(--badT)}
+.flaglist{margin:8px 0 0;padding-left:1.2em}.flaglist li{margin:4px 0}
+.story{font-size:1.08rem}.story .scene{background:var(--navyT);border-radius:12px;padding:14px;margin-bottom:12px}
+.path{font-size:.9rem;color:var(--muted)}
+.meter{height:14px;border-radius:8px;background:#E5E1DC;overflow:hidden;margin:8px 0}.meter b{display:block;height:100%;width:0;transition:width .3s}
+.pw{font:inherit;font-size:1.15rem;width:100%;padding:12px;border:2px solid var(--edge);border-radius:10px}
+.pw:focus{outline:3px solid var(--navy);outline-offset:1px}
+.grid{border-collapse:collapse;width:100%;font-size:.9rem}.grid th,.grid td{border:1px solid var(--line);padding:6px;text-align:center}.grid th{background:var(--navy);color:#fff}.grid td:first-child{text-align:left;font-weight:700}
+.grid input{width:22px;height:22px}
+.grid th:first-child,.grid td:first-child{position:sticky;left:0;z-index:1;background:#fff;min-width:92px}.grid th:first-child{background:var(--navy)}
+.grid td.miss{background:var(--badT)}.grid td.hit{background:var(--okT)}
+.log{font-family:Consolas,Menlo,monospace;font-size:.88rem;background:#262A20;color:#EDDDCD;border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.stage{font-weight:800;color:var(--navy);margin:0 0 6px}
+svg.trip{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+.trip text{font-family:inherit;font-size:11px;fill:var(--ink)}
+.trip .lbl{font-weight:700}
+.trip .ln{stroke:#B8B3AD;stroke-width:2}
+.trip .nd{fill:#fff;stroke:var(--edge);stroke-width:1.5}
+.qbox{margin-top:12px}
+.chips2{display:grid;gap:8px;grid-template-columns:1fr 1fr}
+@media(max-width:420px){.chips2{grid-template-columns:1fr}}
+.chip small{display:block;font-weight:400;color:var(--muted);font-size:.82rem}
+.layers{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.layer{font-size:.85rem;font-weight:700;border-radius:16px;padding:4px 10px;background:var(--navyT);border:2px solid transparent}
+.layer.hit{background:var(--okT);border-color:var(--ok)}
+.layer.det{background:var(--orangeT);border-color:var(--tanText)}
+.wave{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff}
+.wave .res{font-weight:800;margin-top:4px}
+.wave .res.b{color:var(--ok)}.wave .res.d{color:var(--tanText)}.wave .res.x{color:var(--bad)}
+.panes{display:grid;gap:12px}@media(min-width:640px){.panes{grid-template-columns:1fr 1fr}}
+.pane{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.pane h3{margin:0 0 8px;font-size:1rem;color:var(--navy)}
+.field{display:block;margin:6px 0}.field input{font:inherit;width:100%;padding:10px;border:2px solid var(--edge);border-radius:10px}
+.field input:focus{outline:3px solid var(--navy);outline-offset:1px}
+.addr{font-family:Consolas,Menlo,monospace;font-size:.85rem;background:var(--navyT);border-radius:8px;padding:6px 8px;margin-bottom:8px;word-break:break-all}
+.note{font-weight:700;margin:8px 0 0}
+.note.bad{color:var(--bad)}.note.mid{color:var(--tanText)}.note.good{color:var(--ok)}
+.hex{font-family:Consolas,Menlo,monospace;font-size:.95rem;line-height:1.7;word-break:break-all;background:#262A20;color:#EDDDCD;border-radius:10px;padding:10px 12px}
+.hex b{color:#C7A887}
+.hex i{font-style:normal;background:#9A3B2E;color:#fff;border-radius:2px}
+.copy{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px;background:#fff}
+.copy .txt{font-family:Consolas,Menlo,monospace;background:var(--navyT);border-radius:8px;padding:6px 8px;white-space:pre-wrap}
+.order{list-style:none;padding:0;margin:8px 0}.order li{border:2px dashed var(--edge);border-radius:10px;padding:10px 12px;margin-bottom:8px;min-height:46px;background:#fff}
+.order li.filled{border-style:solid;border-color:var(--navy);background:var(--navyT)}
+svg.kbx{width:100%;max-width:420px;height:auto;display:block;margin:0 auto 8px}
+</style></head>
+<body>
+<header class="top"><div class="wrap"><div class="leaf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8C8 10 5.9 16.2 3.8 21.3l1.9.7 1-2.3c.5.2 1 .3 1.3.3C19 20 22 3 22 3c-1 2-8 2.3-13 3.3S2 11.5 2 13.5c0 2 1.8 3.8 1.8 3.8C7 8 17 8 17 8z"/></svg></div>
+<div><h1>Hash Fingerprint</h1><p>A3.5  |  Day 3  |  Session 11.6</p><div class="bars"><i></i><i></i></div></div>
+<a href="../../index.html">Course site</a></div></header>
+<main class="wrap"><section class="card" id="start"><div class="hero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 222" role="img" aria-label="TeaLeaf's Managing Director holding a tablet"><title>TeaLeaf's Managing Director holding a tablet</title><ellipse cx="100" cy="208" rx="80" ry="12" fill="#D9D5D2"/><ellipse cx="100" cy="110" rx="78" ry="92" fill="#EDDDCD"/><g transform="translate(40 6) scale(1.0)"><path d="M36 116 L84 116 L90 194 L30 194 Z" fill="#667C7E"/><path d="M48 130 L43.8 192" stroke="#516364" stroke-width="1.4"/><path d="M56 130 L54.6 192" stroke="#516364" stroke-width="1.4"/><path d="M64 130 L65.4 192" stroke="#516364" stroke-width="1.4"/><path d="M72 130 L76.2 192" stroke="#516364" stroke-width="1.4"/><path d="M30 188 L90 188" stroke="#C7A887" stroke-width="5"/><ellipse cx="49" cy="197" rx="11" ry="5" fill="#262A20"/><ellipse cx="71" cy="197" rx="11" ry="5" fill="#262A20"/><rect x="53" y="42" width="14" height="20" fill="#B97A4F"/><path d="M53 50 Q60 56 67 50 L67 56 Q60 60 53 56 Z" fill="#94613F"/><path d="M36 72 Q36 59 48 57 L72 57 Q84 59 84 72 L83 122 Q60 127 37 122 Z" fill="#EDDDCD"/><path d="M40 57 L55 57 L86 116 L70 124 Z" fill="#667C7E"/><path d="M55 57 L86 116" stroke="#C7A887" stroke-width="3"/><path d="M38 66 L32 94" stroke="#EDDDCD" stroke-width="12" stroke-linecap="round"/><path d="M32 94 L52 102" stroke="#B97A4F" stroke-width="9" stroke-linecap="round"/><path d="M82 66 L90 94" stroke="#EDDDCD" stroke-width="12" stroke-linecap="round"/><path d="M90 94 L68 102" stroke="#B97A4F" stroke-width="9" stroke-linecap="round"/><rect x="46" y="90" width="30" height="21" rx="2.5" fill="#262A20" transform="rotate(-8 61 100)"/><rect x="49" y="93" width="24" height="15" rx="1" fill="#667C7E" transform="rotate(-8 61 100)"/><path d="M53 99 L68 97 M53 103 L63 102" stroke="#EDDDCD" stroke-width="1.6" transform="rotate(-8 61 100)"/><circle cx="52" cy="105" r="5.8" fill="#B97A4F"/><path d="M48 107 Q52 110 56 107" stroke="#94613F" stroke-width="1" fill="none"/><circle cx="68" cy="105" r="5.8" fill="#B97A4F"/><path d="M64 107 Q68 110 72 107" stroke="#94613F" stroke-width="1" fill="none"/><ellipse cx="43" cy="32" rx="3.2" ry="5" fill="#94613F"/><ellipse cx="77" cy="32" rx="3.2" ry="5" fill="#94613F"/><ellipse cx="60" cy="30" rx="17" ry="19" fill="#B97A4F"/><path d="M42.5 30 C40 11 52 7 60 7 C70 7 81 11 77.5 30 C76 20 70 16 60 16 C51 16 45 20 42.5 30 Z" fill="#8E8A85"/><circle cx="60" cy="6" r="8" fill="#8E8A85"/><ellipse cx="53.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><ellipse cx="66.5" cy="31" rx="1.9" ry="2.3" fill="#262A20"/><path d="M50 26 L56 25.3 M64 25.3 L70 26" stroke="#5E5A55" stroke-width="1.8" stroke-linecap="round"/><path d="M60 31 Q62.8 37 59.4 37.6" stroke="#94613F" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M54 41 Q60 46.5 66 41" stroke="#262A20" stroke-width="1.6" fill="#FFFFFF" stroke-linecap="round"/><circle cx="53.5" cy="31" r="4.8" fill="none" stroke="#262A20" stroke-width="1.4"/><circle cx="66.5" cy="31" r="4.8" fill="none" stroke="#262A20" stroke-width="1.4"/><path d="M58.3 31 L61.7 31" stroke="#262A20" stroke-width="1.4"/></g></svg></div><h2>How to play</h2><ol class="steps"><li><strong>Part 1:</strong> make a fingerprint and change one letter.</li><li><strong>Part 2:</strong> check three copies of TeaLeaf's price list.</li><li><strong>Part 3:</strong> lock or fingerprint? Sort eight situations.</li></ol>
+<p>A hash is a fingerprint of data. A tiny change gives a completely different fingerprint.</p><button class="btn" id="go">Start</button></section>
+<section class="card hidden" id="p1"><h2>Part 1: Make a fingerprint</h2>
+<label class="field">Type anything<input id="txt" value="Dimbula 200 kg: LKR 1,500 per kg" autocomplete="off" spellcheck="false"></label>
+<p class="lab">Fingerprint (SHA-256)</p><div class="hex" id="h1"></div>
+<div class="row" style="margin-top:10px"><button class="btn alt" id="flip">Change one letter</button></div>
+<p id="diff" class="note"></p>
+<p>Notice: the fingerprint is always the same length, and you cannot turn it back into the text.</p>
+<div class="row"><button class="btn" id="to2">Go to Part 2</button></div></section>
+<section class="card hidden" id="p2"><h2>Part 2: Check the price list</h2>
+<p>TeaLeaf publishes its price list and its fingerprint. Three customers received copies. For each copy: decide <strong>Same</strong> or <strong>Changed</strong>, then see the fingerprint.</p>
+<div class="copy"><p class="lab">TeaLeaf's fingerprint</p><div class="hex" id="orig"></div></div><div id="copies"></div>
+<div class="row"><button class="btn hidden" id="to3">Go to Part 3</button></div></section>
+<section class="card hidden" id="p3"><h2>Part 3: Lock or fingerprint?</h2>
+<p>One question decides: <strong>can you get the original back?</strong> A lock (encryption) can be opened with the key. A fingerprint (hash) cannot be turned back.</p>
+<div class="meta"><span id="c3"></span><span id="s3"></span></div><div class="q" id="q3" aria-live="polite"></div><div class="opts" id="o3"></div>
+<div class="fb" id="fb3" aria-live="polite"><p class="h" id="fb3h"></p><p id="fb3w"></p><button class="btn" id="n3">Next</button></div></section>
+<section class="card hidden" id="end"><h2>Your result</h2><p class="big" id="score"></p><p id="msg"></p><div class="row"><button class="btn" id="again">Start again</button></div></section>
+<footer>Your answers stay on this device. Nothing is sent or saved.<br>DBIS-11 Cybersecurity and Cloud Computing. &copy; 2026 Niranga Dharmaratna, School of Computing &amp; Engineering, National Institute of Business Management. Content <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, code MIT. <a href="../../LICENSE.html">Licence details</a>.</footer></main>
+<script>const DATA={"original": "Dimbula 200 kg: LKR 1,500 per kg", "copies": [{"who": "Hans in Hamburg", "text": "Dimbula 200 kg: LKR 1,500 per kg", "why": "Same fingerprint, so the copy was not changed. Its integrity is safe."}, {"who": "a shop in Dubai", "text": "Dimbula 200 kg: LKR 150 per kg", "why": "Someone changed the price on the way. The fingerprint shows it at once: integrity has failed."}, {"who": "a hotel in Kandy", "text": "Dimbula 200 kg: LKR 1,500 per kg ", "why": "Only one extra space at the end, but the fingerprint is completely different. A fingerprint shows ANY change, even one you cannot see."}], "lockfp": [{"text": "Kasun locks the salary file so only the MD can read it.", "a": "L", "why": "The MD opens it with her key and gets the original back. That is a lock: encryption."}, {"text": "TeaLeaf checks that its price list was not changed on the way.", "a": "F", "why": "Compare fingerprints. Nobody needs to turn the fingerprint back. That is a hash."}, {"text": "A laptop's disk is scrambled, so a thief cannot read it. The owner unlocks it with a password.", "a": "L", "why": "The owner gets the data back with the key. That is encryption."}, {"text": "A website stores only the fingerprint of each password, so even IT cannot read the passwords.", "a": "F", "why": "The fingerprint cannot be turned back into the password. At login, the website compares fingerprints."}, {"text": "Sachini's cafe traffic is scrambled so the snooper cannot read it, and the shop unscrambles it.", "a": "L", "why": "The shop gets the original back. That is encryption."}, {"text": "The bank checks that a payment file arrived exactly as it was sent.", "a": "F", "why": "Same fingerprint means not one character changed. That is a hash."}, {"text": "A message is scrambled and later unscrambled with the right key.", "a": "L", "why": "Scrambled and unscrambled: a lock. That is encryption."}, {"text": "Two files are compared to see if they are exactly the same.", "a": "F", "why": "Compare their fingerprints. That is a hash."}]};
+
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function fg(h){h=h.replace('#','');const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4));return (.2126*c[0]+.7152*c[1]+.0722*c[2])>.3?'#262A20':'#fff'}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function makeTimer(sec,onTick,onEnd){let left=sec*10,id=null;return{start(){this.stop();left=sec*10;onTick(1);id=setInterval(()=>{left--;onTick(left/(sec*10));if(left<=0){this.stop();onEnd()}},100)},stop(){if(id)clearInterval(id);id=null},used(){return sec-left/10}}}
+
+
+const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2],H0=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+function rr(x,n){return (x>>>n)|(x<<(32-n))}
+function sha256(str){const b=new TextEncoder().encode(str),l=b.length,n=((l+9+63)>>6)<<6,m=new Uint8Array(n);m.set(b);m[l]=0x80;const dv=new DataView(m.buffer);
+ dv.setUint32(n-4,(l*8)>>>0);dv.setUint32(n-8,Math.floor(l/536870912));let H=H0.slice();const w=new Uint32Array(64);
+ for(let i=0;i<n;i+=64){for(let t=0;t<16;t++)w[t]=dv.getUint32(i+t*4);
+  for(let t=16;t<64;t++){const s0=rr(w[t-15],7)^rr(w[t-15],18)^(w[t-15]>>>3),s1=rr(w[t-2],17)^rr(w[t-2],19)^(w[t-2]>>>10);w[t]=(w[t-16]+s0+w[t-7]+s1)>>>0}
+  let [a,b_,c,d,e,f,g,h]=H;
+  for(let t=0;t<64;t++){const S1=rr(e,6)^rr(e,11)^rr(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[t]+w[t])>>>0,S0=rr(a,2)^rr(a,13)^rr(a,22),mj=(a&b_)^(a&c)^(b_&c),t2=(S0+mj)>>>0;
+   h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b_;b_=a;a=(t1+t2)>>>0}
+  H=[a,b_,c,d,e,f,g,h].map((x,k)=>(x+H[k])>>>0)}
+ return H.map(x=>x.toString(16).padStart(8,'0')).join('')}
+function fmt(h,prev){return h.match(/.{8}/g).map((g,k)=>g.split('').map((ch,j)=>prev&&prev[k*8+j]!==ch?`<i>${ch}</i>`:ch).join('')).join(' ')}
+let prev=null,score=0,max=0;
+function p1(){const h=sha256($('#txt').value);$('#h1').innerHTML=fmt(h,prev);if(prev){let d=0;for(let k=0;k<64;k++)if(prev[k]!==h[k])d++;$('#diff').textContent=`${d} of 64 characters changed.`}prev=h}
+$('#txt').addEventListener('input',()=>{prev=sha256($('#txt').value);p1();$('#diff').textContent='You typed: the whole fingerprint changes.';$('#diff').className='note mid'});
+$('#flip').onclick=()=>{const t=$('#txt').value;if(!t)return;const k=Math.floor(Math.random()*t.length),c=t[k];const n=/[0-9]/.test(c)?String((+c+1)%10):c===c.toLowerCase()?c.toUpperCase():c.toLowerCase();
+ const nt=t.slice(0,k)+(n===c?(c===' '?'_':'x'):n)+t.slice(k+1);prev=sha256(t);$('#txt').value=nt;p1();$('#diff').className='note bad';
+ $('#diff').textContent=`One letter changed (position ${k+1}). `+$('#diff').textContent};
+$('#to2').onclick=()=>{$('#p1').classList.add('hidden');$('#p2').classList.remove('hidden');const O=DATA.original;$('#orig').innerHTML=fmt(sha256(O));
+ $('#copies').innerHTML='';DATA.copies.forEach((c,k)=>{const d=document.createElement('div');d.className='copy';d.innerHTML=`<p class="lab">Copy ${k+1}: received by ${esc(c.who)}</p><div class="txt">${esc(c.text)}</div>
+  <div class="row" style="margin-top:8px"><button class="btn alt">Same</button><button class="btn alt">Changed</button></div><div class="fb"><p class="h"></p><div class="hex"></div><p class="w"></p></div>`;
+  const [bs,bc]=d.querySelectorAll('button');const go=g=>{bs.disabled=bc.disabled=true;const h=sha256(c.text),same=h===sha256(O),ok=(g==='s')===same;max++;if(ok)score++;
+   const fb=d.querySelector('.fb');fb.querySelector('.h').textContent=(ok?'Correct: ':'Not this time: ')+(same?'the fingerprints match.':'the fingerprints do NOT match.');
+   fb.querySelector('.hex').innerHTML=fmt(h,sha256(O));fb.querySelector('.w').textContent=c.why;fb.className='fb show '+(ok?'good':'no');
+   if(max===DATA.copies.length)$('#to3').classList.remove('hidden')};bs.onclick=()=>go('s');bc.onclick=()=>go('c');$('#copies').appendChild(d)})};
+let Q3=[],i3=0;
+$('#to3').onclick=()=>{$('#p2').classList.add('hidden');$('#p3').classList.remove('hidden');const it=DATA.lockfp;Q3=shuffle([...Array(it.length/2).keys()]).flatMap(k=>shuffle([it[2*k],it[2*k+1]]));i3=0;q3()};
+function q3(){const it=Q3[i3];$('#c3').textContent=`Card ${i3+1} of ${Q3.length}`;$('#s3').textContent=`${score} points`;$('#q3').textContent=it.text;$('#fb3').className='fb';
+ const box=$('#o3');box.innerHTML='';[['L','Lock (encryption)','You CAN get the original back with the key','#667C7E'],['F','Fingerprint (hash)','You can NOT get the original back','#C7A887']].forEach(([k,l,s,c])=>{const b=document.createElement('button');b.className='opt';b.dataset.k=k;
+  b.innerHTML=`<span class="k" style="background:${c};color:${fg(c)}">${k}</span><span><strong>${l}</strong><small>${s}</small></span>`;b.onclick=()=>{box.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.k===it.a)x.classList.add('right')});const ok=k===it.a;if(!ok)b.classList.add('wrong');max++;if(ok)score++;
+  $('#fb3h').textContent=ok?'Correct!':'Not this time.';$('#fb3w').textContent=it.why;$('#fb3').className='fb show '+(ok?'good':'no');$('#s3').textContent=`${score} points`;$('#fb3').scrollIntoView({block:'nearest',behavior:'smooth'})};box.appendChild(b)})}
+$('#n3').onclick=()=>{i3++;if(i3<Q3.length)q3();else{$('#p3').classList.add('hidden');$('#end').classList.remove('hidden');$('#score').textContent=`${score} of ${max}`;
+ $('#msg').textContent='A fingerprint (hash) protects integrity: it shows whether data was changed. A lock (encryption) protects confidentiality: it keeps data secret, and the key opens it again.'}};
+function begin(){prev=null;score=0;max=0;$('#txt').value=DATA.original;$('#diff').textContent='';['start','p2','p3','end'].forEach(x=>$('#'+x).classList.add('hidden'));$('#to3').classList.add('hidden');$('#p1').classList.remove('hidden');p1()}
+$('#go').onclick=begin;$('#again').onclick=begin;
+</script>
+</body></html>
